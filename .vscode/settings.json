@@ -1,0 +1,32 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": ["javascript", "javascriptreact"],
+
+  "cSpell.language": "en,pt,pt-BR",
+  "cSpell.words": [
+    "clsx",
+    "vite",
+    "vitejs",
+    "fundamentus"
+  ],
+  "cSpell.enableFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "markdown",
+    "json",
+    "css"
+  ],
+
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  },
+  "files.exclude": {
+    "**/.git": true
+  }
+}
