@@ -19,7 +19,7 @@ jobs:
           cache: "npm"
 
       - name: 3. Install Dependencies
-        run: npm ci
+        run: npm i
 
       - name: 4. Prettier
         run: npm run format:check
