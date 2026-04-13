@@ -6,8 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "format": "prettier --write ./src/**/**/*.{js,jsx}",
-    "format:check": "prettier --check ./src/**/**/*.{js,jsx}"
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx}\""
   },
   "dependencies": {
     "clsx": "^2.1.1",
