@@ -33,7 +33,7 @@ const BASE_URL = "https://pi5-api-production.up.railway.app/api/v1";
 export const api = {
   /**
    * @param {string} username
-   * @returns {Promise<GitHubUser>}
+   * @returns {Promise<GithubUser>}
    */
   getUser: async (username) => {
     const res = await fetch(`https://api.github.com/users/${username}`);
