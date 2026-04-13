@@ -31,22 +31,22 @@
 const BASE_URL = "https://pi5-api-production.up.railway.app/api/v1";
 
 export const api = {
-	/**
-	 * @param {string} username
-	 * @returns {Promise<GitHubUser>}
-	 */
-	getUser: async (username) => {
-		const res = await fetch(`https://api.github.com/users/${username}`);
-		if (!res.ok) throw new Error("Falha ao buscar o usuário no GitHub");
-		return res.json();
-	},
+  /**
+   * @param {string} username
+   * @returns {Promise<GitHubUser>}
+   */
+  getUser: async (username) => {
+    const res = await fetch(`https://api.github.com/users/${username}`);
+    if (!res.ok) throw new Error("Falha ao buscar o usuário no GitHub");
+    return res.json();
+  },
 
-	/**
-	 * @returns {Promise<MockState>}
-	 */
-	getMockState: async () => {
-		const res = await fetch(BASE_URL + "/games/mock-state", { method: "POST" });
-		if (!res.ok) throw new Error("Falha ao obter mock state: " + res.text());
-		return res.json();
-	},
+  /**
+   * @returns {Promise<MockState>}
+   */
+  getMockState: async () => {
+    const res = await fetch(BASE_URL + "/games/mock-state", { method: "POST" });
+    if (!res.ok) throw new Error("Falha ao obter mock state: " + res.text());
+    return res.json();
+  },
 };
