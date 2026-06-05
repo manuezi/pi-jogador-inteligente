@@ -1,3 +1,2 @@
 export * from "./Home";
-export * from "./User";
-export * from "./IAPage";
+export * from "./Game";

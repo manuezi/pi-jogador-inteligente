@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 
-import { Home, User, IAPage } from "@/pages";
+import { Home, Game } from "@/pages";
 
 export function App() {
   return (
@@ -8,8 +8,7 @@ export function App() {
       <header>Header</header>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/users/:username" element={<User />} />
-        <Route path="/ia" element={<IAPage />} />
+        <Route path="/game/:id" element={<Game />} />
       </Routes>
       <footer>Footer</footer>
     </BrowserRouter>
