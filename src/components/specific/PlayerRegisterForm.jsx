@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { api } from '@/services';
-import { useGameContext } from '@/hooks';
-import styles from './PlayerRegisterForm.module.css';
+import { api } from "@/services";
+import { useGameContext } from "@/hooks";
+import styles from "./PlayerRegisterForm.module.css";
 
 export function PlayerRegisterForm() {
   const { player, setPlayer } = useGameContext();
@@ -15,17 +15,17 @@ export function PlayerRegisterForm() {
     try {
       const formData = new FormData(e.currentTarget);
       const response = await api.createPlayer({
-        group_name: formData.get('group_name'),
-        ai_player_name: formData.get('ai_player_name'),
-        ai_player_avatar: formData.get('ai_player_avatar'),
-        ai_player_description: formData.get('ai_player_description'),
-        ai_player_move_endpoint: formData.get('ai_player_move_endpoint'),
+        group_name: formData.get("group_name"),
+        ai_player_name: formData.get("ai_player_name"),
+        ai_player_avatar: formData.get("ai_player_avatar"),
+        ai_player_description: formData.get("ai_player_description"),
+        ai_player_move_endpoint: formData.get("ai_player_move_endpoint"),
       });
 
       setPlayer(response);
       e.currentTarget.reset();
     } catch (err) {
-      console.error(err?.message || '[ERR]: erro ao registrar jogador', err);
+      console.error(err?.message || "[ERR]: erro ao registrar jogador", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -61,7 +61,7 @@ export function PlayerRegisterForm() {
           name="ai_player_avatar"
           className={styles.input}
           type="text"
-          defaultValue={player?.ai_player_avatar || 'https://picsum.photos/200'}
+          defaultValue={player?.ai_player_avatar || "https://picsum.photos/200"}
           required
         />
       </div>
@@ -82,17 +82,15 @@ export function PlayerRegisterForm() {
           name="ai_player_move_endpoint"
           className={styles.input}
           type="text"
-          defaultValue={player?.ai_player_move_endpoint || 'https://minha-api.com/move'}
+          defaultValue={
+            player?.ai_player_move_endpoint || "https://minha-api.com/move"
+          }
           required
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className={styles.button}
-      >
-        {isSubmitting ? 'Registrando...' : 'Registrar Jogador'}
+      <button type="submit" disabled={isSubmitting} className={styles.button}>
+        {isSubmitting ? "Registrando..." : "Registrar Jogador"}
       </button>
     </form>
   );

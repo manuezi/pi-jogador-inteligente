@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { api } from '@/services';
-import { useGameContext } from '@/hooks';
-import styles from './SpectatorRegisterForm.module.css';
+import { api } from "@/services";
+import { useGameContext } from "@/hooks";
+import styles from "./SpectatorRegisterForm.module.css";
 
 export function SpectatorRegisterForm({ gameId }) {
   const { setSpectator } = useGameContext();
@@ -16,14 +16,14 @@ export function SpectatorRegisterForm({ gameId }) {
       const formData = new FormData(e.currentTarget);
 
       const response = await api.addSpectator(gameId, {
-        spectator_name: formData.get('spectator_name'),
-        spectator_avatar: formData.get('spectator_avatar'),
+        spectator_name: formData.get("spectator_name"),
+        spectator_avatar: formData.get("spectator_avatar"),
       });
 
       setSpectator(response);
       e.currentTarget.reset();
     } catch (err) {
-      console.error(err?.message || '[ERR]: erro ao registrar espectador', err);
+      console.error(err?.message || "[ERR]: erro ao registrar espectador", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -53,12 +53,8 @@ export function SpectatorRegisterForm({ gameId }) {
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className={styles.button}
-      >
-        {isSubmitting ? 'Registrando...' : 'Registrar Espectador'}
+      <button type="submit" disabled={isSubmitting} className={styles.button}>
+        {isSubmitting ? "Registrando..." : "Registrar Espectador"}
       </button>
     </form>
   );

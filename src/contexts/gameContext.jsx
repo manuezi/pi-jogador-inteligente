@@ -1,12 +1,15 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useState } from "react";
 
-import { getLocalStorageItem, setLocalStorageItem } from '@/utils';
+import { getLocalStorageItem, setLocalStorageItem } from "@/utils";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const gameContext = createContext({});
 
 export function GameContextProvider({ children }) {
-  const [player, setPlayer] = useState(() => getLocalStorageItem('player'));
-  const [spectator, setSpectatorData] = useState(() => getLocalStorageItem('spectator'));
+  const [player, setPlayer] = useState(() => getLocalStorageItem("player"));
+  const [spectator, setSpectatorData] = useState(() =>
+    getLocalStorageItem("spectator"),
+  );
 
   function setSpectator(value) {
     setSpectatorData((prev) => ({
@@ -19,23 +22,23 @@ export function GameContextProvider({ children }) {
     setPlayer(null);
     setSpectator(null);
 
-    localStorage.removeItem('player');
-    localStorage.removeItem('spectator');
+    localStorage.removeItem("player");
+    localStorage.removeItem("spectator");
   }
 
   useEffect(() => {
     if (player) {
-      setLocalStorageItem('player', player);
-      setAccessToken(player?.player_access_token);
+      setLocalStorageItem("player", player);
+      setLocalStorageItem("token", player.player_access_token);
     } else {
-      localStorage.removeItem('player');
-      setAccessToken(null);
+      localStorage.removeItem("player");
+      localStorage.removeItem("token");
     }
   }, [player]);
 
   useEffect(() => {
-    if (spectator) setLocalStorageItem('spectator', spectator);
-    else localStorage.removeItem('spectator');
+    if (spectator) setLocalStorageItem("spectator", spectator);
+    else localStorage.removeItem("spectator");
   }, [spectator]);
 
   return (
@@ -45,7 +48,7 @@ export function GameContextProvider({ children }) {
         setPlayer,
         spectator,
         setSpectator,
-        logout
+        logout,
       }}
     >
       {children}

@@ -4,10 +4,10 @@
  * @returns {any} Valor armazenado no localStorage
  */
 export function getLocalStorageItem(key) {
-	if (typeof window === "undefined") return null;
+  if (typeof window === "undefined") return null;
 
-	const storedValue = localStorage.getItem(key);
-	return storedValue ? JSON.parse(storedValue) : null;
+  const storedValue = localStorage.getItem(key);
+  return storedValue ? JSON.parse(storedValue) : null;
 }
 
 /**
@@ -16,6 +16,6 @@ export function getLocalStorageItem(key) {
  * @param {any} value - Valor a ser armazenado
  */
 export function setLocalStorageItem(key, value) {
-	if (typeof window === "undefined") return;
-	localStorage.setItem(key, JSON.stringify(value));
+  if (typeof window === "undefined") return;
+  localStorage.setItem(key, JSON.stringify(value));
 }

@@ -172,226 +172,229 @@ const BASE_URL = "https://pi5-api-production.up.railway.app/api/v1";
 const WS_BASE_URL = "wss://pi5-api-production.up.railway.app/api/v1/ws";
 
 export const api = {
-	/**
-	 * @returns {Promise<Array<Player>>}
-	 */
-	listPlayers: async () => {
-		const res = await fetch(BASE_URL + "/players", {
-			headers: {
-				Authorization: "Bearer " + getLocalStorageItem("token"),
-			},
-		});
-		if (!res.ok) throw new Error("Falha ao listar jogadores: " + res.text());
-		return res.json();
-	},
+  /**
+   * @returns {Promise<Array<Player>>}
+   */
+  listPlayers: async () => {
+    const res = await fetch(BASE_URL + "/players", {
+      headers: {
+        Authorization: "Bearer " + getLocalStorageItem("token"),
+      },
+    });
+    if (!res.ok) throw new Error("Falha ao listar jogadores: " + res.text());
+    return res.json();
+  },
 
-	/**
-	 * @param {CreatePlayerPayload} payload
-	 * @returns {Promise<CreatePlayerResponse>}
-	 */
-	createPlayer: async (payload) => {
-		const res = await fetch(BASE_URL + "/players", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(payload),
-		});
-		if (!res.ok) throw new Error("Falha ao criar jogador: " + res.text());
-		return res.json();
-	},
+  /**
+   * @param {CreatePlayerPayload} payload
+   * @returns {Promise<CreatePlayerResponse>}
+   */
+  createPlayer: async (payload) => {
+    const res = await fetch(BASE_URL + "/players", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error("Falha ao criar jogador: " + res.text());
+    return res.json();
+  },
 
-	/**
-	 * @param {number} playerId
-	 * @param {string} endpoint
-	 * @returns {Promise<Player>}
-	 */
-	updatePlayerMoveEndpoint: async (playerId, endpoint) => {
-		const res = await fetch(BASE_URL + `/players/${playerId}`, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + getLocalStorageItem("token"),
-			},
-			body: JSON.stringify({ ai_player_move_endpoint: endpoint }),
-		});
-		if (!res.ok)
-			throw new Error("Falha ao atualizar endpoint de movimento: " + res.text());
-		return res.json();
-	},
+  /**
+   * @param {number} playerId
+   * @param {string} endpoint
+   * @returns {Promise<Player>}
+   */
+  updatePlayerMoveEndpoint: async (playerId, endpoint) => {
+    const res = await fetch(BASE_URL + `/players/${playerId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getLocalStorageItem("token"),
+      },
+      body: JSON.stringify({ ai_player_move_endpoint: endpoint }),
+    });
+    if (!res.ok)
+      throw new Error(
+        "Falha ao atualizar endpoint de movimento: " + res.text(),
+      );
+    return res.json();
+  },
 
-	/**
-	 * @param {GameCreatePayload} payload
-	 * @returns {Promise<Game>}
-	 */
-	createGame: async (payload) => {
-		const res = await fetch(BASE_URL + "/games", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + getLocalStorageItem("token"),
-			},
-			body: JSON.stringify(payload),
-		});
-		if (!res.ok) throw new Error("Falha ao criar partida: " + res.text());
-		return res.json();
-	},
+  /**
+   * @param {GameCreatePayload} payload
+   * @returns {Promise<Game>}
+   */
+  createGame: async (payload) => {
+    const res = await fetch(BASE_URL + "/games", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getLocalStorageItem("token"),
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error("Falha ao criar partida: " + res.text());
+    return res.json();
+  },
 
-	/**
-	 * @param {ListGamesParams} params
-	 * @returns {Promise<GameListResponse>}
-	 */
-	listGames: async (params) => {
-		const searchParams = new URLSearchParams();
-		Object.entries(params).forEach(([key, value]) => {
-			if (value !== undefined && value !== null) {
-				searchParams.append(key, value.toString());
-			}
-		});
-		const res = await fetch(BASE_URL + "/games?" + searchParams.toString(), {
-			headers: {
-				Authorization: "Bearer " + getLocalStorageItem("token"),
-			},
-		});
-		if (!res.ok) throw new Error("Falha ao listar partidas: " + res.text());
-		return res.json();
-	},
+  /**
+   * @param {ListGamesParams} params
+   * @returns {Promise<GameListResponse>}
+   */
+  listGames: async (params) => {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        searchParams.append(key, value.toString());
+      }
+    });
+    const res = await fetch(BASE_URL + "/games?" + searchParams.toString(), {
+      headers: {
+        Authorization: "Bearer " + getLocalStorageItem("token"),
+      },
+    });
+    if (!res.ok) throw new Error("Falha ao listar partidas: " + res.text());
+    return res.json();
+  },
 
-	/**
-	 * @param {string} gameId
-	 * @returns {Promise<Game>}
-	 */
-	getGame: async (gameId) => {
-		const res = await fetch(BASE_URL + `/games/${gameId}`, {
-			headers: {
-				Authorization: "Bearer " + getLocalStorageItem("token"),
-			},
-		});
-		if (!res.ok) throw new Error("Falha ao buscar partida: " + res.text());
-		return res.json();
-	},
+  /**
+   * @param {string} gameId
+   * @returns {Promise<Game>}
+   */
+  getGame: async (gameId) => {
+    const res = await fetch(BASE_URL + `/games/${gameId}`, {
+      headers: {
+        Authorization: "Bearer " + getLocalStorageItem("token"),
+      },
+    });
+    if (!res.ok) throw new Error("Falha ao buscar partida: " + res.text());
+    return res.json();
+  },
 
-	/**
-	 * @param {string} gameId
-	 * @returns {Promise<Array<GameTurn>>}
-	 */
-	listGameTurns: async (gameId) => {
-		const res = await fetch(BASE_URL + `/games/${gameId}/turns`, {
-			headers: {
-				Authorization: "Bearer " + getLocalStorageItem("token"),
-			},
-		});
-		if (!res.ok) throw new Error("Falha ao listar turnos: " + res.text());
-		return res.json();
-	},
+  /**
+   * @param {string} gameId
+   * @returns {Promise<Array<GameTurn>>}
+   */
+  listGameTurns: async (gameId) => {
+    const res = await fetch(BASE_URL + `/games/${gameId}/turns`, {
+      headers: {
+        Authorization: "Bearer " + getLocalStorageItem("token"),
+      },
+    });
+    if (!res.ok) throw new Error("Falha ao listar turnos: " + res.text());
+    return res.json();
+  },
 
-	/**
-	 * @param {string} gameId
-	 * @returns {Promise<Array<MoveRequest>>}
-	 */
-	listGameMoves: async (gameId) => {
-		const res = await fetch(BASE_URL + `/games/${gameId}/moves`, {
-			headers: {
-				Authorization: "Bearer " + getLocalStorageItem("token"),
-			},
-		});
-		if (!res.ok) throw new Error("Falha ao listar jogadas: " + res.text());
-		return res.json();
-	},
+  /**
+   * @param {string} gameId
+   * @returns {Promise<Array<MoveRequest>>}
+   */
+  listGameMoves: async (gameId) => {
+    const res = await fetch(BASE_URL + `/games/${gameId}/moves`, {
+      headers: {
+        Authorization: "Bearer " + getLocalStorageItem("token"),
+      },
+    });
+    if (!res.ok) throw new Error("Falha ao listar jogadas: " + res.text());
+    return res.json();
+  },
 
-	/**
-	 * @param {string} gameId
-	 * @param {JoinGamePayload} payload
-	 * @returns {Promise<Game>}
-	 */
-	joinGame: async (gameId, payload) => {
-		const res = await fetch(BASE_URL + `/games/${gameId}/join`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + getLocalStorageItem("token"),
-			},
-			body: JSON.stringify(payload),
-		});
-		if (!res.ok) throw new Error("Falha ao entrar na partida: " + res.text());
-		return res.json();
-	},
+  /**
+   * @param {string} gameId
+   * @param {JoinGamePayload} payload
+   * @returns {Promise<Game>}
+   */
+  joinGame: async (gameId, payload) => {
+    const res = await fetch(BASE_URL + `/games/${gameId}/join`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getLocalStorageItem("token"),
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error("Falha ao entrar na partida: " + res.text());
+    return res.json();
+  },
 
-	/**
-	 * @param {string} gameId
-	 * @param {string | null } reason
-	 * @returns {Promise<Game>}
-	 */
-	startGame: async (gameId, payload) => {
-		const res = await fetch(BASE_URL + `/games/${gameId}/start`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + getLocalStorageItem("token"),
-			},
-			body: JSON.stringify({ reason }),
-		});
-		if (!res.ok) throw new Error("Falha ao iniciar partida: " + res.text());
-		return res.json();
-	},
+  /**
+   * @param {string} gameId
+   * @param {string | null } reason
+   * @returns {Promise<Game>}
+   */
+  startGame: async (gameId, reason) => {
+    const res = await fetch(BASE_URL + `/games/${gameId}/start`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getLocalStorageItem("token"),
+      },
+      body: JSON.stringify({ reason }),
+    });
+    if (!res.ok) throw new Error("Falha ao iniciar partida: " + res.text());
+    return res.json();
+  },
 
-	/**
-	 * @param {string} gameId
-	 * @param {SpectatorCreatePayload} payload
-	 * @returns {Promise<SpectatorCreateResponse>}
-	 */
-	addSpectator: async (gameId, payload) => {
-		const res = await fetch(BASE_URL + `/games/${gameId}/spectators`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: "Bearer " + getLocalStorageItem("token"),
-			},
-			body: JSON.stringify(payload),
-		});
-		if (!res.ok) throw new Error("Falha ao registrar espectador: " + res.text());
-		return res.json();
-	},
+  /**
+   * @param {string} gameId
+   * @param {SpectatorCreatePayload} payload
+   * @returns {Promise<SpectatorCreateResponse>}
+   */
+  addSpectator: async (gameId, payload) => {
+    const res = await fetch(BASE_URL + `/games/${gameId}/spectators`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getLocalStorageItem("token"),
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok)
+      throw new Error("Falha ao registrar espectador: " + res.text());
+    return res.json();
+  },
 
-	/**
-	 * @returns {Promise<MockState>}
-	 */
-	getMockState: async () => {
-		const res = await fetch(BASE_URL + "/games/mock-state", { method: "POST" });
-		if (!res.ok) throw new Error("Falha ao obter mock state: " + res.text());
-		return res.json();
-	},
+  /**
+   * @returns {Promise<MockState>}
+   */
+  getMockState: async () => {
+    const res = await fetch(BASE_URL + "/games/mock-state", { method: "POST" });
+    if (!res.ok) throw new Error("Falha ao obter mock state: " + res.text());
+    return res.json();
+  },
 
-	/**
-	 * @param {ConnectionParams} params
-	 * @returns {WebSocket}
-	 */
-	connectGame: (params) => {
-		const token = encodeURIComponent(params.token);
-		const socketUrl = WS_BASE_URL + `/games/${params.gameId}?token=${token}`;
+  /**
+   * @param {ConnectionParams} params
+   * @returns {WebSocket}
+   */
+  connectGame: (params) => {
+    const token = encodeURIComponent(params.token);
+    const socketUrl = WS_BASE_URL + `/games/${params.gameId}?token=${token}`;
 
-		const ws = new WebSocket(socketUrl);
+    const ws = new WebSocket(socketUrl);
 
-		ws.onopen = (e) => {
-			console.log("[WS] Conectado à partida", e);
-			params.onOpen(e);
-		};
+    ws.onopen = (e) => {
+      console.log("[WS] Conectado à partida", e);
+      params.onOpen(e);
+    };
 
-		ws.onmessage = (e) => {
-			console.log("[WS] Mensagem recebida", e);
-			params.onMessage(e);
-		};
+    ws.onmessage = (e) => {
+      console.log("[WS] Mensagem recebida", e);
+      params.onMessage(e);
+    };
 
-		ws.onclose = (e) => {
-			console.log("[WS] Desconectado da partida", e);
-			params.onClose(e);
-		};
+    ws.onclose = (e) => {
+      console.log("[WS] Desconectado da partida", e);
+      params.onClose(e);
+    };
 
-		ws.onerror = (e) => {
-			console.error("[WS] Erro no WebSocket:", e);
-			ws.close();
-		};
+    ws.onerror = (e) => {
+      console.error("[WS] Erro no WebSocket:", e);
+      ws.close();
+    };
 
-		return ws;
-	},
+    return ws;
+  },
 };

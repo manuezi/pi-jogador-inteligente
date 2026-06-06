@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { api } from '@/services';
-import { useGameContext } from '@/hooks/useGameContext';
-import styles from './PlayerUpdateForm.module.css';
+import { api } from "@/services";
+import { useGameContext } from "@/hooks/useGameContext";
+import styles from "./PlayerUpdateForm.module.css";
 
 export function PlayerUpdateForm() {
   const { player, setPlayer } = useGameContext();
@@ -16,12 +16,12 @@ export function PlayerUpdateForm() {
       const formData = new FormData(e.currentTarget);
 
       const response = await api.updatePlayerMoveEndpoint(player?.id, {
-        ai_player_move_endpoint: formData.get('ai_player_move_endpoint'),
+        ai_player_move_endpoint: formData.get("ai_player_move_endpoint"),
       });
 
       setPlayer({ ...player, ...response });
     } catch (err) {
-      console.error(err?.message || '[ERR]: erro ao atualizar jogador', err);
+      console.error(err?.message || "[ERR]: erro ao atualizar jogador", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -35,17 +35,15 @@ export function PlayerUpdateForm() {
           name="ai_player_move_endpoint"
           className={styles.input}
           type="text"
-          defaultValue={player?.ai_player_move_endpoint || 'https://minha-api.com/move'}
+          defaultValue={
+            player?.ai_player_move_endpoint || "https://minha-api.com/move"
+          }
           required
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className={styles.button}
-      >
-        {isSubmitting ? 'Atualizando...' : 'Atualizar Endpoint'}
+      <button type="submit" disabled={isSubmitting} className={styles.button}>
+        {isSubmitting ? "Atualizando..." : "Atualizar Endpoint"}
       </button>
     </form>
   );

@@ -3,62 +3,57 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "@/services";
 
 export function useGameSocket(gameId, token) {
-	const [connected, setConnected] = useState(false);
-	const [currentGameState, setCurrentGameState] = useState(null);
-	const [mounted, setMounted] = useState(false);
+  const [connected, setConnected] = useState(false);
+  const [gameState, setGameState] = useState(null);
 
-	const reconnectTimeout = useRef(null);
-	const webSocketRef = useRef(null);
+  const reconnectTimeoutRef = useRef(null);
+  const wsRef = useRef(null);
 
-  function onMessage(event) {
-    try {
-      const dto = JSON.parse(event.data);
-      setCurrentGameState(dto);
-    } catch (err) {
-      console.error(
-        `[ERR]: Invalid message received from WebSocket: ${event.data}`,
-        err
-      );
+  useEffect(() => {
+    let isMounted = true;
+
+    if (!gameId || !token) return;
+
+    function connect() {
+      wsRef.current = api.connectGame({
+        token,
+        onOpen: () => {
+          if (!isMounted) return;
+          setConnected(true);
+        },
+        onMessage: (e) => {
+          if (!isMounted) return;
+          try {
+            const gameState = JSON.parse(e.data);
+            setGameState(gameState);
+          } catch (err) {
+            console.error(
+              `[ERR]: Invalid message received from WebSocket: ${e.data}`,
+              err,
+            );
+          }
+        },
+        onClose: () => {
+          if (!isMounted) return;
+          setConnected(false);
+          // Reconecta automaticamente após 2 segundos se a partida ainda estiver ativa
+          reconnectTimeoutRef.current = setTimeout(() => {
+            if (isMounted) connect();
+          }, 2000);
+        },
+      });
     }
-  }
+    connect();
 
-	function onClose() {
-		setConnected(false);
-		// Reconecta automaticamente após 2 segundos se a partida ainda estiver ativa
-		reconnectTimeout.current = setTimeout(() => {
-			if (gameId) {
-        webSocketRef.current = api.connectGame({
-          token,
-          onOpen,
-          onMessage,
-          onClose,
-        });
-			}
-		}, 2000);
-	}
-
-	useEffect(() => {
-		if (!gameId || !token || !mounted) return;
-
-		webSocketRef.current = api.connectGame({
-			token,
-			onOpen: () => setConnected(true),
-			onMessage,
-			onClose,
-		});
-
-		return () => {
-      if (reconnectTimeout.current) clearTimeout(reconnectTimeout.current);
-      webSocketRef.current?.close();
+    return () => {
+      isMounted = false;
+      clearTimeout(reconnectTimeoutRef.current);
+      wsRef.current?.close();
     };
-  }, [gameId, token, mounted]);
+  }, [gameId, token]);
 
-	useEffect(() => {
-		setMounted(true);
-	}, [mounted]);
-
-	return {
-		connected,
-		gameState: currentGameState,
-	};
+  return {
+    connected,
+    gameState,
+  };
 }
