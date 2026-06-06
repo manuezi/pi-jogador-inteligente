@@ -154,7 +154,9 @@ components/
 │   ├── Input.jsx
 │   ├── Input.module.css
 │   └── ...
-├── layout/
+├── specific/
+│   ├── PlayerRegisterForm.jsx
+│   ├── PlayerRegisterForm.module.css
 │   ├── Footer.jsx
 │   ├── Footer.module.css
 │   ├── Header.jsx
@@ -166,9 +168,8 @@ pages/
 └── ...
 ```
 
-- **`components/`:** A grande maioria dos componentes React ficam aqui.
 - **`components/common/`:** Componentes comuns que são reutilizados em várias páginas ou outros componentes maiores.
-- **`components/layout/`:** Componentes mais específicos que **não** são reutilizados.
+- **`components/specific/`:** Componentes específicos que **não** são reutilizados.
 - **`pages/`:** Páginas do site.
 
 ### 4.2. Estilização: CSS Modules
@@ -231,68 +232,92 @@ export function Filho({ className, ...props }) {
 }
 ```
 
-## 5. Integração com o Backend
+## 5. Gerenciamento de Estado e Tempo Real
 
-Fazer requisições HTTP cruas no meio do código visual é complexo de ser feito corretamente.
-Para blindar o batalhão contra isso, nós temos o nosso próprio "motor" de requisições.
-Você não precisa saber como o motor foi montado, você só precisa saber dirigir o carro.
+### 5.1. O Contexto do Jogo (`gameContext` e `useGameContext`)
 
-### 5.1. Os Hooks Específicos para Requisições
+Este é o nosso **"Armazém Global"**. Ele guarda os dados do `player` e do `spectator`. A principal vantagem desta abstração é a **sincronização automática com o `localStorage`**.
 
-Para cada rota do backend, existe um Hook correspondente já criado na pasta `/hooks/api`.
-* Quer buscar os dados do jogador? Use o `useGetJogador()`.
-* Quer listar o ranking do jogo? Use o `useGetRanking()`.
+Você não precisa se preocupar em salvar manualmente os dados no navegador para que eles persistam após um F5. Basta usar o `setPlayer` ou `setSpectator` fornecidos pelo hook, e a mágica acontece por baixo dos panos. Além disso, temos uma função `logout` pronta para limpar toda a base e deslogar o usuário com segurança.
 
-Esses hooks resolvem três problemas de uma vez só:
-1. Fazem o `try/catch` para o jogo não explodir se algo der errado.
-2. Gerenciam os estados de `loading` e `error` automaticamente.
-3. Fazem o VS Code saber exatamente quais dados o backend está devolvendo e vai autocompletar para você.
+### 5.2. O Radar WebSocket (`useGameSocket`)
 
-### 5.2. Como Usar na Prática
+Este hook gerencia a conexão em tempo real de forma blindada. A comunicação via WebSocket é complexa, por isso criamos esta camada de proteção.
 
-Quando for construir a sua Página/Componente, você vai chamar o hook e extrair três coisas dele:
-`data`, `isLoading` e `error`.
+Só é necessário passar o `gameId` e o `token` e o hook cuida de:
+- Reconexões automáticas em caso de queda.
+- Evitar loops infinitos de re-renderização que travam o navegador.
+- Devolver um objeto simples e direto: `{ connected, gameState }`.
 
-Veja o padrão de como a sua tela deve reagir a essas três variáveis:
+## 6. Comunicação com o Backend e Formulários
 
+### 6.1. Mapeamento da API e Hooks Customizados
+
+Todas as requisições para o backend estão centralizadas na pasta `/services/api.js`. No entanto, a forma de consumí-las muda dependendo do tipo da requisição:
+
+#### Requisições do tipo GET (Leitura)
+
+Para buscar dados, você **deve usar os Hooks Customizados** localizados em `hooks/api/` (ex: `useListPlayers`, `useGetGame`). Estes hooks utilizam o nosso motor `useFetch` e são protegidos por `useCallback` para evitar loops de requisições.
+
+**Como usar na prática:**
 ```javascript
-import { useGetRanking } from '../hooks/api/useRanking';
-import { Spinner } from '../components/common/Spinner';
-import styles from './PaginaRanking.module.css';
+const { data, isLoading, error } = useGetGame(gameId);
 
-export function PaginaRanking() {
-  // 1. Aciona o Hook da requisição desejada
-  const { data, isLoading, error } = useGetRanking();
+if (isLoading) return <Loading />;
+if (error) return <Error message={error.message} />;
 
-  // 2. Trata o Carregamento PRIMEIRO
-  if (isLoading) return <Spinner />; // Mostra que está carregando antes de tentar ler os dados
+return <div>{data.status}</div>;
+```
 
-  // 3. Trata a Falha em SEGUIDA
-  if (error) {
-    return <div className={styles.alertaErro}>Falha de comunicação: {error.message}</div>;
+#### Requisições do tipo POST, PUT, DELETE (Ação)
+
+Para realizar ações (como criar um jogador ou iniciar uma partida), você **deve chamar o serviço `api` diretamente** dentro dos seus componentes ou formulários. Estas chamadas precisam ser envolvidas em um bloco `try/catch` para tratamento de erros.
+
+**Como usar na prática:**
+```javascript
+function fazAlgumaCoisa() {
+  try {
+    await api.createPlayer({ name: "João" }); // Chamada direta ao serviço api para ações
+    console.log("Criado com sucesso!");
+  } catch (err) {
+    console.error("Erro na ação:", err.message); // Tratamento de erros dentro do bloco catch
   }
-
-  // 4. Renderiza o Sucesso (Aqui você tem certeza que "data" existe)
-  return (
-    <div className={styles.container}>
-      <h1>Ranking do Jogo</h1>
-      <ul>
-        {/* Ao digitar "jogador.", o VS Code vai sugerir ".nome" e ".pontos" sozinho */}
-        {data.map((jogador) => (
-          <li key={jogador.id}>{jogador.nome} - {jogador.pontos}</li>
-        ))}
-      </ul>
-    </div>
-  );
 }
 ```
 
-## 6. Entrega e Inspeção (O Caminho do Pull Request)
+### 6.2. Formulários Nativos
+
+Seguimos uma filosofia de formulários de baixa complexidade.
+
+O nosso padrão para formulários é:
+- **Extração Sem Re-renders:** No evento `onSubmit`, use a API nativa `new FormData(e.currentTarget)` para extrair os valores. Isso evita criar estados para cada input e re-renderizar o formulário a cada tecla digitada.
+- **Validação Nativa:** Use os atributos do HTML5, como `required`, `minlength`, `type="url"`, etc. Deixe o navegador fazer o trabalho pesado de validar os campos.
+- **Estado de Envio:** Use um `useState` booleano simples (`isSubmitting`) para desabilitar o botão enquanto a requisição acontece. Sempre use o bloco `finally` no seu `try/catch` para garantir que o botão volte ao estado normal, independente de sucesso ou falha.
+
+Exemplo de implementação padrão:
+```javascript
+async function handleSubmit(e) {
+  e.preventDefault();
+  setIsSubmitting(true);
+  try {
+    const formData = new FormData(e.currentTarget);
+    const body = { nome: formData.get('nome') };
+    await api.algumaAcao(body); // Chamada direta ao serviço api para ações
+    e.currentTarget.reset(); // Limpa o form nativamente
+  } catch (err) {
+    console.error("Erro na ação:", err.message);
+  } finally {
+    setIsSubmitting(false);
+  }
+}
+```
+
+## 7. Entrega e Inspeção (O Caminho do Pull Request)
 
 Você terminou o código, marcou o checklist no Kanban e tudo funciona na sua máquina.
 Agora vem a parte mais crítica: levar o seu código do seu "universo paralelo" (branch) para a base principal (`main`).
 
-### 6.1. O Push: Enviando para a Base Remota
+### 7.1. O Push: Enviando para a Base Remota
 
 Antes de qualquer coisa, você precisa enviar seus commits locais para o servidor do GitHub.
 No seu terminal, dentro da sua branch, rode:
@@ -300,13 +325,13 @@ No seu terminal, dentro da sua branch, rode:
 git push
 ```
 
-Caso dê erro, muito provavelmente a sua branch não existe no GitHub ainda,
+Caso deu erro, muito provavelmente a sua branch não existe no GitHub ainda,
 então você precisa informar o git para criá-la:
 ```bash
 git push -u origin nome-da-sua-branch
 ```
 
-### 6.2. Criando o Pull Request (PR)
+### 7.2. Criando o Pull Request (PR)
 
 O Pull Request (PR) é o seu pedido formal de: *"Terminei minha tarefa, podem revisar para eu colocar na main?"*.
 
@@ -314,12 +339,12 @@ O Pull Request (PR) é o seu pedido formal de: *"Terminei minha tarefa, podem re
 2. **Título:** Use um nome claro. Ex: `Feat: Implementa formulário de login` (geralmente o nome da tarefa).
 3. **Descrição:** Adicione `/close #<numero-da-issue>` para fechar a issue automaticamente quando o PR for mergeado.
 
-### 6.3. Chamando a Inspeção (Reviewers)
+### 7.3. Chamando a Inspeção (Reviewers)
 
 * No menu lateral direito do seu PR, procure por **"Reviewers"**.
 * **Selecione o usuário de quem vai fazer a inspeção do código.**
 
-### 6.4. CI/CD e Vercel
+### 7.4. CI/CD e Vercel
 
 Assim que você abre o PR, o GitHub aciona automaticamente os "Cães de Guarda" (nosso pipeline de CI):
 * **Vercel Preview:** Ele vai tentar gerar um link de teste com o seu código. Se o build falhar, o GitHub vai mostrar um **X vermelho**.
@@ -328,7 +353,7 @@ Assim que você abre o PR, o GitHub aciona automaticamente os "Cães de Guarda" 
 **Se aparecer um "X" vermelho:** Clique em "Details", descubra o erro, conserte no seu VS Code,
 dê um novo `commit` e um novo `push`. O PR vai se atualizar sozinho.
 
-### 6.5. O Feedback: O que fazer com os comentários?
+### 7.5. O Feedback: O que fazer com os comentários?
 
 Durante o Code Review, é possível deixar comentários em linhas específicas do código pedindo ajustes
 (ex: *"Mude o nome desta variável"*, *"Use tal hook aqui"*).
@@ -337,7 +362,7 @@ Durante o Code Review, é possível deixar comentários em linhas específicas d
 dê um novo `commit` (tipo `fix: ...` ou `refactor: ...`) e dê um novo `push`. 
 * Os comentários no GitHub serão atualizados. Assim que o **"Approve"** for dado, o sinal ficará verde.
 
-### 6.6. O Merge Final
+### 7.6. O Merge Final
 
 O botão de **"Merge pull request"** só deve ser apertado quando:
 1. O CI/CD estiver **Verde** (Build passou).
