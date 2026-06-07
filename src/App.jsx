@@ -1,17 +1,19 @@
-import { BrowserRouter, Routes, Route } from "react-router";
-
-import { Home, Game } from "@/pages";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AppLayout } from "./pages/App.layout";
+import { Home, Game, WatchListPage } from "@/pages";
+import { GameContextProvider } from "@/contexts/GameContext";
 
 export function App() {
   return (
     <GameContextProvider>
       <BrowserRouter>
-        <header>Header</header>
-        <Routes>
+       <AppLayout>
+        <Routes >
           <Route path="/" element={<Home />} />
-          <Route path="/game/:id" element={<Game />} />
+          <Route path="/watch/:id" element={<Game />} />
+          <Route path="/watch" element={<WatchListPage />} />
         </Routes>
-        <footer>Footer</footer>
+        </AppLayout>
       </BrowserRouter>
     </GameContextProvider>
   );
