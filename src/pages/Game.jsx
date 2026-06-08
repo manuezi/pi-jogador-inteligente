@@ -1,5 +1,5 @@
 import { useGetMockState } from "@/hooks/api";
-import { Link, useParams } from "react-router";
+import { Link, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import styles from "./Game.module.css";
 
@@ -44,7 +44,7 @@ export function Game() {
 
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ padding: 20 }}>
       <h1>IA Page</h1>
       <h1>Assistindo Jogo #{id}</h1>
       <Link to="/watch">&lt; Voltar</Link>

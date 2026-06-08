@@ -1,18 +1,18 @@
-import { cn } from '@/core/components/helpers';
+import { cn } from '@/components/specific/helpers';
+import { Typography } from '@/pages/text/Typography';
 import { PlayerRegisterForm } from '@/components/specific/PlayerRegisterForm';
 import { PlayerUpdateForm } from '@/components/specific/PlayerUpdateForm';
 import { useGameContext } from '@/hooks/useGameContext';
-import { Typography } from '@/core/components/ui/text/typography';
 
-export function Player() {
+export function PlayerPage() {
   const { player } = useGameContext();
 
   return (
-    <div className={cn('flex flex-col gap-4 py-8', 'flex-1')}>
+    <div className="flex flex-col gap-4 py-8 flex-1">
       <Typography
         variant={'h1'}
         asTag={'h1'}
-        className={cn('text-4xl', 'font-bold')}
+        className="text-4xl font-bold"
       >
         {player?.ai_player_name ? `${player.ai_player_name}` : 'Jogador'}
       </Typography>

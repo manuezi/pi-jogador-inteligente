@@ -1,22 +1,40 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import "./App.layout.css";
+import { Outlet } from "react-router-dom";
 
-export function AppLayout({ children = null }) {
-return (
-    <div>
-      <header>
-       <h1>PI5</h1>
+
+export function AppLayout() {
+  return (
+    <div className="layout">
+      <header className="header">
+        <h1>PI5</h1>
       </header>
-      <nav style={{ display: "flex", gap: "1rem", flexDirection: "row" }}>
-        <Link to="/">Home</Link>
-        <Link to="/watch">Watch</Link>
+
+      <nav className="menu">
+        <Link to="/" className="menu-button">
+          🏠 Home
+        </Link>
+
+        <Link to="/watch/:id" className="menu-button">
+          🎮 Game
+        </Link>
+
+        <Link to="/player" className="menu-button">
+          👤 Player
+        </Link>
+
+        <Link to="/watch" className="menu-button">
+          👁 Watch
+        </Link>
       </nav>
-      <hr />
-      <main>{children}</main>
-      <hr />
-      <footer>
+
+      <main className="content">
+        <Outlet />
+      </main>
+
+      <footer className="footer">
         <p>&copy; 2026 PI5.</p>
       </footer>
     </div>
   );
 }
-
