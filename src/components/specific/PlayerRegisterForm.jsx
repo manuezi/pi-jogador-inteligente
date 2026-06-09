@@ -1,97 +1,200 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Controller, useForm } from 'react-hook-form';
+import { registerPlayer } from './feature/api';
+import { cn } from '@/components/specific/helpers';
 
 import { api } from "@/services";
 import { useGameContext } from "@/hooks";
 import styles from "./PlayerRegisterForm.module.css";
 
 export function PlayerRegisterForm() {
-  const { player, setPlayer } = useGameContext();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+const context = useGameContext();
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setIsSubmitting(true);
 
+const { player, setPlayer } = context;
+  const form = useForm({
+    defaultValues: {
+      ai_player_name: player?.ai_player_name || 'Meu Jogador',
+      ai_player_avatar:
+        player?.ai_player_avatar || 'https://example.com/avatar.png',
+      group_name: player?.group_name || 'Meu Grupo',
+      ai_player_description:
+        player?.ai_player_description || 'Descrição do meu jogador de IA',
+      ai_player_move_endpoint:
+        player?.ai_player_move_endpoint || 'https://example.com/move-endpoint',
+    },
+  });
+  const { formState } = form;
+  const { isSubmitting, errors } = formState;
+
+  async function handleSubmit(dto) {
     try {
-      const formData = new FormData(e.currentTarget);
-      const response = await api.createPlayer({
-        group_name: formData.get("group_name"),
-        ai_player_name: formData.get("ai_player_name"),
-        ai_player_avatar: formData.get("ai_player_avatar"),
-        ai_player_description: formData.get("ai_player_description"),
-        ai_player_move_endpoint: formData.get("ai_player_move_endpoint"),
+      const response = await registerPlayer({
+        ...dto,
       });
 
+      if (!response?.player_access_token) {
+        throw new Error('[ERR]: resposta inesperada ao registrar jogador');
+      }
+
       setPlayer(response);
-      e.currentTarget.reset();
+
+      form?.reset({
+        ai_player_name: response?.ai_player_avatar,
+        ai_player_avatar: response?.ai_player_avatar,
+        group_name: response?.group_name,
+        ai_player_description: response?.ai_player_description,
+        ai_player_move_endpoint: response?.ai_player_move_endpoint,
+      });
     } catch (err) {
-      console.error(err?.message || "[ERR]: erro ao registrar jogador", err);
-    } finally {
-      setIsSubmitting(false);
+      console.error(err?.message || '[ERR]: erro ao registrar jogador', err);
     }
   }
 
+  useEffect(() => {
+    if (player?.id) {
+      form.reset({
+        ai_player_name: player?.ai_player_name || 'Meu Jogador',
+        ai_player_avatar:
+          player?.ai_player_avatar || 'https://example.com/avatar.png',
+        group_name: player?.group_name || 'Meu Grupo',
+        ai_player_description:
+          player?.ai_player_description || 'Descrição do meu jogador de IA',
+        ai_player_move_endpoint:
+          player?.ai_player_move_endpoint ||
+          'https://example.com/move-endpoint',
+      });
+    }
+  }, [player]);
+
   return (
-    <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Nome do grupo</label>
-        <input
-          name="group_name"
-          className={styles.input}
-          type="text"
-          defaultValue={player?.group_name}
-          required
-        />
-      </div>
+    <form
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className={cn('flex flex-col gap-2')}
+    >
+      <Controller
+        name={'group_name'}
+        control={form.control}
+        rules={{ required: 'O nome do grupo é obrigatório' }}
+        render={({ field }) => (
+          <div className={cn('flex flex-col gap-1')}>
+            <label className="text-xs">Nome do grupo</label>
+            <input
+              className={cn('border rounded-sm px-4 py-2')}
+              type={'text'}
+              {...field}
+            />
+            {errors.group_name && (
+              <span className={cn('text-red-500 text-xs')}>
+                {errors.group_name.message}
+              </span>
+            )}
+          </div>
+        )}
+      />
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Nome do jogador</label>
-        <input
-          name="ai_player_name"
-          className={styles.input}
-          type="text"
-          defaultValue={player?.ai_player_name}
-          required
-        />
-      </div>
+      <Controller
+        name={'ai_player_name'}
+        control={form.control}
+        rules={{ required: 'O nome do jogador de IA é obrigatório' }}
+        render={({ field }) => (
+          <div className={cn('flex flex-col gap-1')}>
+            <label className="text-xs">Nome do jogador</label>
+            <input
+              className={cn('border rounded-sm px-4 py-2')}
+              type={'text'}
+              {...field}
+            />
+            {errors.ai_player_name && (
+              <span className={cn('text-red-500 text-xs')}>
+                {errors.ai_player_name.message}
+              </span>
+            )}
+          </div>
+        )}
+      />
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>URL do avatar</label>
-        <input
-          name="ai_player_avatar"
-          className={styles.input}
-          type="text"
-          defaultValue={player?.ai_player_avatar || "https://picsum.photos/200"}
-          required
-        />
-      </div>
+      <Controller
+        name={'ai_player_avatar'}
+        control={form.control}
+        rules={{ required: 'A URL do avatar do jogador de IA é obrigatória' }}
+        render={({ field }) => (
+          <div className={cn('flex flex-col gap-1')}>
+            <label className="text-xs">URL do avatar</label>
+            <input
+              className={cn('border rounded-sm px-4 py-2')}
+              type={'text'}
+              {...field}
+            />
+            {errors.ai_player_avatar && (
+              <span className={cn('text-red-500 text-xs')}>
+                {errors.ai_player_avatar.message}
+              </span>
+            )}
+          </div>
+        )}
+      />
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Descrição do jogador</label>
-        <input
-          name="ai_player_description"
-          className={styles.input}
-          type="text"
-          defaultValue={player?.ai_player_description}
-        />
-      </div>
+      <Controller
+        name={'ai_player_description'}
+        control={form.control}
+        render={({ field }) => (
+          <div className={cn('flex flex-col gap-1')}>
+            <label className="text-xs">Descrição do jogador</label>
+            <input
+              className={cn('border rounded-sm px-4 py-2')}
+              type={'text'}
+              {...field}
+            />
+            {errors.ai_player_description && (
+              <span className={cn('text-red-500 text-xs')}>
+                {errors.ai_player_description.message}
+              </span>
+            )}
+          </div>
+        )}
+      />
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Endpoint de movimento do jogador</label>
-        <input
-          name="ai_player_move_endpoint"
-          className={styles.input}
-          type="text"
-          defaultValue={
-            player?.ai_player_move_endpoint || "https://minha-api.com/move"
-          }
-          required
-        />
-      </div>
+      <Controller
+        name={'ai_player_move_endpoint'}
+        control={form.control}
+        rules={{
+          required: 'O endpoint de movimento do jogador de IA é obrigatório',
+        }}
+        render={({ field }) => (
+          <div className={cn('flex flex-col gap-1')}>
+            <label className="text-xs">Endpoint de movimento do jogador</label>
+            <input
+              className={cn('border rounded-sm px-4 py-2')}
+              type={'text'}
+              {...field}
+            />
+            {errors.ai_player_move_endpoint && (
+              <span className={cn('text-red-500 text-xs')}>
+                {errors.ai_player_move_endpoint.message}
+              </span>
+            )}
+          </div>
+        )}
+      />
 
-      <button type="submit" disabled={isSubmitting} className={styles.button}>
-        {isSubmitting ? "Registrando..." : "Registrar Jogador"}
+      <button
+        type={'submit'}
+        disabled={isSubmitting}
+        className={cn(
+          'mt-4',
+          'px-4',
+          'py-2',
+          'bg-green-500',
+          'text-white',
+          'rounded-md',
+          'hover:bg-green-600',
+          isSubmitting && 'opacity-50 cursor-not-allowed'
+        )}
+      >
+        {isSubmitting ? 'Registrando...' : 'Registrar Jogador'}
       </button>
     </form>
   );
+  
 }

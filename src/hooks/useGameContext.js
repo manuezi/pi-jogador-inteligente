@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { gameContext } from "@/contexts";
+import { gameContext } from "@/contexts/GameContext";
 
 export function useGameContext() {
   return useContext(gameContext);

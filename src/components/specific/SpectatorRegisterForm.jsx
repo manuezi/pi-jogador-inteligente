@@ -1,60 +1,98 @@
 import { useState } from "react";
+import { cn } from '@/components/specific/helpers';
+import { Controller, useForm } from 'react-hook-form';
+import { registerSpectator } from './feature/api';
 
 import { api } from "@/services";
 import { useGameContext } from "@/hooks";
 import styles from "./SpectatorRegisterForm.module.css";
 
 export function SpectatorRegisterForm({ gameId }) {
-  const { setSpectator } = useGameContext();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const form = useForm({
+    defaultValues: {
+      spectator_avatar: 'https://example.com/avatar.png',
+      spectator_name: 'Meu Espectador',
+    },
+  });
+  const { formState } = form;
+  const { isSubmitting, errors } = formState;
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setIsSubmitting(true);
-
+  async function handleSubmit(dto) {
     try {
-      const formData = new FormData(e.currentTarget);
-
-      const response = await api.addSpectator(gameId, {
-        spectator_name: formData.get("spectator_name"),
-        spectator_avatar: formData.get("spectator_avatar"),
+      const response = await registerSpectator(gameId, {
+        ...dto,
       });
 
-      setSpectator(response);
-      e.currentTarget.reset();
+      if (!response?.player_access_token) {
+        throw new Error('[ERR]: resposta inesperada ao registrar espectador');
+      }
     } catch (err) {
-      console.error(err?.message || "[ERR]: erro ao registrar espectador", err);
-    } finally {
-      setIsSubmitting(false);
+      console.error(err?.message || '[ERR]: erro ao registrar espectador', err);
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className={styles.formContainer}>
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Nome do espectador</label>
-        <input
-          name="spectator_name"
-          className={styles.input}
-          type="text"
-          defaultValue="Espectador Anônimo"
-          required
-        />
-      </div>
+    <form
+      onSubmit={form.handleSubmit(handleSubmit)}
+      className={cn('flex flex-col gap-2')}
+    >
+      <Controller
+        name={'spectator_name'}
+        control={form.control}
+        rules={{ required: 'O nome do espectador é obrigatório' }}
+        render={({ field }) => (
+          <div className={cn('flex flex-col gap-1')}>
+            <label className="text-xs">Nome do espectador</label>
+            <input
+              className={cn('border rounded-sm px-4 py-2')}
+              type={'text'}
+              {...field}
+            />
+            {errors.spectator_name && (
+              <span className={cn('text-red-500 text-xs')}>
+                {errors.spectator_name.message}
+              </span>
+            )}
+          </div>
+        )}
+      />
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>URL do avatar</label>
-        <input
-          name="spectator_avatar"
-          className={styles.input}
-          type="text"
-          defaultValue="https://picsum.photos/200"
-          required
-        />
-      </div>
+      <Controller
+        name={'spectator_avatar'}
+        control={form.control}
+        rules={{ required: 'A URL do avatar do espectador é obrigatória' }}
+        render={({ field }) => (
+          <div className={cn('flex flex-col gap-1')}>
+            <label className="text-xs">URL do avatar</label>
+            <input
+              className={cn('border rounded-sm px-4 py-2')}
+              type={'text'}
+              {...field}
+            />
+            {errors.spectator_avatar && (
+              <span className={cn('text-red-500 text-xs')}>
+                {errors.spectator_avatar.message}
+              </span>
+            )}
+          </div>
+        )}
+      />
 
-      <button type="submit" disabled={isSubmitting} className={styles.button}>
-        {isSubmitting ? "Registrando..." : "Registrar Espectador"}
+      <button
+        type={'submit'}
+        disabled={isSubmitting}
+        className={cn(
+          'mt-4',
+          'px-4',
+          'py-2',
+          'bg-green-500',
+          'text-white',
+          'rounded-md',
+          'hover:bg-green-600',
+          isSubmitting && 'opacity-50 cursor-not-allowed'
+        )}
+      >
+        {isSubmitting ? 'Registrando...' : 'Registrar Espectador'}
       </button>
     </form>
   );

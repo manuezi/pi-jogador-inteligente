@@ -1,6 +1,5 @@
 import { useGetMockState } from "@/hooks/api";
 import { Link, useParams } from "react-router-dom";
-import { useEffect } from "react";
 import styles from "./Game.module.css";
 
 export function Game() {
@@ -8,7 +7,8 @@ export function Game() {
   const { id } = useParams();
 
 
-  async function fetchGame() {
+    async function fetchGame() {
+
     error(false);
     isLoading(true);
     try {
@@ -28,10 +28,7 @@ export function Game() {
     }
   }
 
-  useEffect(() => {
-    if (!id) return;
-    fetchGame();
-  }, [id]);
+
 
   if (isLoading || !data) {
     return <div className={styles.container}>Carregando...</div>;

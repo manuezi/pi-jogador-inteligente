@@ -13,7 +13,8 @@ export function App() {
         <Routes >
           <Route element={<AppLayout />}>
           <Route path="/" element={<Home />} />
-            <Route path="/watch/:id" element={<Game />} />
+            <Route path="/watch/:id" element={<Game />} />           
+            <Route path="/player" element={<PlayerPage />} />
             <Route path="/watch" element={<WatchListPage />} />
           </Route>
         </Routes>
