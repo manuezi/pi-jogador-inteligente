@@ -1,4 +1,5 @@
 import { useGameContext, useGameSocket } from "@/hooks";
+import { Board } from "@/components/specific";
 import styles from "./ViewGame.module.css";
 
 export function ViewGame({ gameId }) {
@@ -7,6 +8,8 @@ export function ViewGame({ gameId }) {
     gameId,
     spectator?.[gameId]?.spectator_access_token || null,
   );
+
+  //console.log("GAME STATE:", gameState);
 
   return (
     <div className={styles.viewGameContainer}>
@@ -34,13 +37,23 @@ export function ViewGame({ gameId }) {
         </div>
 
         {gameState && (
-          <div className={styles.gameInfoBox}>
-            <p>
-              <strong>Status</strong>
-            </p>
+          <>
+            <div className={styles.gameInfoBox}>
+              <p>
+                <strong>Status</strong>
+              </p>
 
-            <span>{gameState.status}</span>
-          </div>
+              <span>{gameState.status}</span>
+            </div>
+
+            <div className={styles.boardWrapper}>
+              <Board
+                board={gameState.board}
+                turingProfessor={gameState.turing_player?.ai_player_name}
+                lovelaceProfessor={gameState.lovelace_player?.ai_player_name}
+              />
+            </div>
+          </>
         )}
       </div>
     </div>

@@ -1,0 +1,33 @@
+.boardContainer {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 12px;
+  background-color: #37474f;
+  padding: 16px;
+  border-radius: 12px;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  user-select: none;
+}
+
+@media (max-width: 600px) {
+  .board {
+    gap: 8px;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .board {
+    gap: 4px;
+    padding: 6px;
+  }
+}
