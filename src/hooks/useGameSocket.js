@@ -17,6 +17,7 @@ export function useGameSocket(gameId, token) {
     function connect() {
       wsRef.current = api.connectGame({
         token,
+        gameId,
         onOpen: () => {
           if (!isMounted) return;
           setConnected(true);
