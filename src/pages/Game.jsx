@@ -1,22 +1,20 @@
-import { useGetMockState } from "@/hooks/api";
+import { useParams } from "react-router";
+
+import { SpectateGame } from "@/components/specific";
 import styles from "./Game.module.css";
 
 export function Game() {
-  const { data, isLoading, error } = useGetMockState();
-
-  if (isLoading || !data) {
-    return <div className={styles.container}>Carregando...</div>;
-  }
-
-  if (error) {
-    return <div className={styles.container}>Erro: {error.message}</div>;
-  }
+  const { gameId } = useParams();
 
   return (
-    <div className={styles.container}>
-      <h1>IA Page</h1>
+    <div className={styles.gamePage}>
+      <div className={styles.gameHeader}>
+        <h1 className={styles.gameTitle}>🎮 Assistindo Partida</h1>
 
-      <ul></ul>
+        <div className={styles.gameId}>#{gameId}</div>
+      </div>
+
+      <SpectateGame gameId={gameId} />
     </div>
   );
 }

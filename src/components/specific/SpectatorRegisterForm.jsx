@@ -6,6 +6,9 @@ import styles from "./SpectatorRegisterForm.module.css";
 
 export function SpectatorRegisterForm({ gameId }) {
   const { setSpectator } = useGameContext();
+  const [spectatorAvatar, setSpectatorAvatar] = useState(
+    "https://picsum.photos/200",
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(e) {
@@ -15,12 +18,12 @@ export function SpectatorRegisterForm({ gameId }) {
     try {
       const formData = new FormData(e.currentTarget);
 
-      const response = await api.addSpectator(gameId, {
+      const spectator = await api.addSpectator(gameId, {
         spectator_name: formData.get("spectator_name"),
-        spectator_avatar: formData.get("spectator_avatar"),
+        spectator_avatar: spectatorAvatar,
       });
 
-      setSpectator(response);
+      setSpectator(spectator);
       e.currentTarget.reset();
     } catch (err) {
       console.error(err?.message || "[ERR]: erro ao registrar espectador", err);
@@ -31,6 +34,15 @@ export function SpectatorRegisterForm({ gameId }) {
 
   return (
     <form onSubmit={handleSubmit} className={styles.formContainer}>
+      <img
+        src={spectatorAvatar}
+        alt="Avatar"
+        className={styles.previewAvatar}
+        onError={(e) => {
+          e.currentTarget.style.display = "none";
+        }}
+      />
+
       <div className={styles.inputGroup}>
         <label className={styles.label}>Nome do espectador</label>
         <input
@@ -46,9 +58,10 @@ export function SpectatorRegisterForm({ gameId }) {
         <label className={styles.label}>URL do avatar</label>
         <input
           name="spectator_avatar"
+          value={spectatorAvatar}
+          onChange={(e) => setSpectatorAvatar(e.target.value)}
           className={styles.input}
           type="text"
-          defaultValue="https://picsum.photos/200"
           required
         />
       </div>

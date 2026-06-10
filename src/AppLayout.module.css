@@ -1,0 +1,128 @@
+.footer {
+  text-align: center;
+  color: #6d6db5;
+  padding: 20px;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+
+  font-size: clamp(2rem, 2vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1.2;
+
+  margin-bottom: 40px;
+  padding: 20px;
+
+  color: #7b5fb0;
+
+  text-transform: uppercase;
+
+  text-shadow:
+    0 2px 0 #ffffff,
+    0 4px 8px rgba(123, 95, 176, 0.25);
+
+  animation: fadeInTitle 0.8s ease-out;
+}
+
+@keyframes fadeInTitle {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.menuButton {
+  text-decoration: none;
+
+  min-width: 140px;
+
+  padding: 12px 24px;
+
+  border: 3px solid #b28dbd;
+  border-radius: 999px;
+
+  background: white;
+
+  color: #444;
+
+  text-align: center;
+
+  transition: 0.2s;
+}
+
+.menuButton:hover {
+  transform: translateY(-2px);
+  background: #f8f1fb;
+}
+
+.mainPanel {
+  max-width: 1200px;
+
+  min-height: 600px;
+
+  margin: auto;
+
+  background: white;
+
+  border: 5px solid #b28dbd;
+
+  border-radius: 30px;
+
+  padding: 30px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.logoutHeaderButton {
+  padding: 10px 20px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: linear-gradient(
+    135deg,
+    #e25555,
+    #c73e3e
+  );
+
+  color: white;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.logoutHeaderButton:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 20px rgba(226, 85, 85, 0.3);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 20px 40px;
+}

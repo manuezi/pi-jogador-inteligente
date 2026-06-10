@@ -1,0 +1,143 @@
+.playerPage {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 20px;
+}
+
+.formsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  width: 100%;
+  justify-content: center;
+  align-items: stretch;
+}
+
+@media (max-width: 768px) {
+  .formsContainer {
+    flex-direction: column;
+  }
+}
+
+.playerCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 30px;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  border: 3px solid #b08db9;
+
+  border-radius: 30px;
+
+  box-shadow: 0 10px 25px rgba(176, 141, 185, 0.15);
+}
+
+.playerCard h3,
+.infoCard h3 {
+  color: #8f6ca8;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.playerSubtitle {
+  color: #7d6594;
+  font-size: 1rem;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.playerAvatar {
+  width: 130px;
+  height: 130px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  border: 4px solid #b08db9;
+
+  margin-bottom: 16px;
+}
+
+.playerGroup {
+  margin-top: 10px;
+
+  padding: 8px 20px;
+
+  background: #f5ebfa;
+
+  border: 2px solid #b08db9;
+
+  border-radius: 999px;
+
+  color: #8f6ca8;
+
+  font-weight: 600;
+}
+
+.logoutButton {
+  margin-top: 20px;
+
+  padding: 12px 24px;
+
+  border: none;
+
+  border-radius: 999px;
+
+  background: #e25c5c;
+
+  color: white;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.logoutButton:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 6px 16px rgba(226, 92, 92, 0.3);
+}
+
+.infoCard {
+  padding: 24px;
+
+  background: white;
+
+  border: 3px solid #b08db9;
+
+  border-radius: 24px;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  margin-bottom: 16px;
+
+  padding-bottom: 12px;
+
+  border-bottom: 1px solid #eee;
+}
+
+.infoItem strong {
+  color: #777;
+}
+
+.infoItem span {
+  color: #333;
+
+  word-break: break-word;
+}
