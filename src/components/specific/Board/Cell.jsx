@@ -22,6 +22,8 @@ export function Cell({ level, professor, team }) {
           [styles.level4]: level === 4,
         })}
       >
+        <div className={styles.levelIndicator}>{level}º ano</div>
+
         {/* Nível 4: Cúpula (Dome) */}
         {level === 4 && <div className={styles.dome} />}
 
