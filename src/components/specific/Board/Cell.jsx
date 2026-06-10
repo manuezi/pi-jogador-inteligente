@@ -3,7 +3,7 @@ import styles from "./Cell.module.css";
 
 /**
  * Componente Cell - Representa uma única célula do tabuleiro 5x5.
- * 
+ *
  * @param {Object} props
  * @param {number} props.level - Nível de construção (0 a 4).
  * @param {string|null} props.professor - Nome do professor na célula, se houver.

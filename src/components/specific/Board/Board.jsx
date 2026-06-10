@@ -3,7 +3,7 @@ import styles from "./Board.module.css";
 
 /**
  * Componente Board - Renderiza a grade 5x5 do jogo.
- * 
+ *
  * @param {Object} props
  * @param {Array<Array<{level: number, professor: string|null}>>} props.board - Matriz do tabuleiro.
  * @param {Object} [props.players] - Objeto opcional contendo informações dos times para mapeamento.
@@ -21,14 +21,16 @@ export function Board({ board, turingProfessor, lovelaceProfessor }) {
 
   /**
    * Determina o time de um professor com base no nome.
-   * @param {string} professorName 
+   * @param {string} professorName
    */
   const getTeam = (professorName) => {
     if (!professorName) return null;
-    
+
     // Se tivermos os nomes específicos passados por props
-    if (turingProfessor && professorName.includes(turingProfessor)) return "turing";
-    if (lovelaceProfessor && professorName.includes(lovelaceProfessor)) return "lovelace";
+    if (turingProfessor && professorName.includes(turingProfessor))
+      return "turing";
+    if (lovelaceProfessor && professorName.includes(lovelaceProfessor))
+      return "lovelace";
 
     // Fallback: se não tiver props, podemos tentar inferir ou deixar neutro
     // Por padrão, assumimos que o componente pai passará as props corretas
