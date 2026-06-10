@@ -1,25 +1,17 @@
-import { useParams } from "react-router-dom";
-import { Typography } from "@/pages/text/Typography";
-import { SpectateGame } from "./SpectateGame";
-import "./Game.css";
+import { useParams } from "react-router";
+
+import { SpectateGame } from "@/components/specific";
+import styles from "./Game.module.css";
 
 export function Game() {
   const { gameId } = useParams();
 
   return (
-    <div className="game-page">
-      <div className="game-header">
-        <Typography
-          variant="h1"
-          asTag="h1"
-          className="game-title"
-        >
-          🎮 Assistindo Partida
-        </Typography>
+    <div className={styles.gamePage}>
+      <div className={styles.gameHeader}>
+        <h1 className={styles.gameTitle}>🎮 Assistindo Partida</h1>
 
-        <div className="game-id">
-          #{gameId}
-        </div>
+        <div className={styles.gameId}>#{gameId}</div>
       </div>
 
       <SpectateGame gameId={gameId} />

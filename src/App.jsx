@@ -1,23 +1,19 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AppLayout } from "@/pages/App.layout";
-import { Home } from "@/pages/Home";
-import { Game } from "@/pages/Game";
-import { PlayerPage } from "@/pages/Player";
-import { WatchListPage } from "@/pages/Watch";
-import { GameContextProvider } from "@/contexts/GameContext";
-import { GameFinished } from "@/pages/GameFinished";
+import { BrowserRouter, Routes, Route } from "react-router";
+
+import { AppLayout } from "./AppLayout";
+import { Game, GameDetails, WatchListPage, PlayerPage } from "./pages";
+import { GameContextProvider } from "@/contexts";
 
 export function App() {
   return (
     <GameContextProvider>
       <BrowserRouter>
-        <Routes >
+        <Routes>
           <Route element={<AppLayout />}>
-          <Route path="/" element={<Home />} />
-            <Route path="/watch/:gameId" element={<Game />} />           
+            <Route path="/" element={<WatchListPage />} />
+            <Route path="/watch/:gameId" element={<Game />} />
+            <Route path="/results/:gameId" element={<GameDetails />} />
             <Route path="/player" element={<PlayerPage />} />
-            <Route path="/watch" element={<WatchListPage />} />
-            <Route path="/results/:gameId" element={<GameFinished />} />
           </Route>
         </Routes>
       </BrowserRouter>

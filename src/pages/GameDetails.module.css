@@ -1,11 +1,11 @@
-.result-page {
+.resultPage {
   max-width: 1200px;
   margin: auto;
 
   padding: 30px;
 }
 
-.result-title {
+.resultTitle {
   text-align: center;
 
   color: #8f6ca8;
@@ -13,7 +13,7 @@
   margin-bottom: 30px;
 }
 
-.result-card {
+.resultCard {
   display: grid;
 
   grid-template-columns:
@@ -24,7 +24,7 @@
   margin-bottom: 30px;
 }
 
-.result-section {
+.resultSection {
   background: white;
 
   border: 3px solid #b08db9;
@@ -36,7 +36,7 @@
   text-align: center;
 }
 
-.players-grid {
+.playersGrid {
   display: grid;
 
   grid-template-columns:
@@ -45,7 +45,7 @@
   gap: 24px;
 }
 
-.player-result-card {
+.playerResultCard {
   background: white;
 
   border: 3px solid #b08db9;
@@ -60,7 +60,7 @@
     0 10px 25px rgba(176,141,185,.15);
 }
 
-.player-result-card img {
+.playerResultCard img {
   width: 120px;
   height: 120px;
 
@@ -73,7 +73,7 @@
   margin-bottom: 16px;
 }
 
-.back-button {
+.backButton {
   display: inline-block;
 
   margin-bottom: 20px;
@@ -85,7 +85,7 @@
   font-weight: 600;
 }
 
-.log-button {
+.logButton {
   padding: 12px 24px;
   display: block;
   margin: 20px auto;
@@ -106,7 +106,7 @@
   cursor: pointer;
 }
 
-.log-container {
+.logContainer {
   margin-top: 20px;
 
   max-height: 400px;
@@ -121,19 +121,19 @@
   border-radius: 20px;
 }
 
-.log-item {
+.logItem {
   padding: 10px 0;
 
   border-bottom: 1px solid #e7dff0;
 }
 
 
-.winner-card h2 {
+.winnerCard h2 {
   color: #a86d00;
   margin-bottom: 15px;
 }
 
-.winner-avatar {
+.winnerAvatar {
   width: 120px;
   height: 120px;
 

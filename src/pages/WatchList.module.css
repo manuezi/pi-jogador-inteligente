@@ -1,11 +1,18 @@
-.watch-filters {
+.watchContainer {
   display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.watchFilters {
+  display: flex;
+  justify-content: center;
   gap: 16px;
   margin-bottom: 30px;
   flex-wrap: wrap;
 }
 
-.watch-filters button {
+.watchFilters button {
   min-width: 140px;
 
   padding: 10px 20px;
@@ -14,21 +21,23 @@
   border-radius: 999px;
 
   background: white;
+  color: #8f6ca8;
+  font-weight: 600;
 
   cursor: pointer;
 
   transition: 0.2s;
 }
 
-.watch-filters button:hover {
+.watchFilters button:hover {
   transform: translateY(-2px);
 }
 
-.watch-filters .active {
+.watchFilters .active {
   background: #e8d6ef;
 }
 
-.game-card {
+.gameCard {
   display: flex;
 
   justify-content: space-between;
@@ -46,13 +55,13 @@
   background: white;
 }
 
-.game-info {
+.gameInfo {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.watch-button {
+.watchButton {
   text-decoration: none;
 
   padding: 10px 20px;
@@ -66,18 +75,18 @@
   transition: 0.2s;
 }
 
-.watch-button:hover {
+.watchButton:hover {
   background: #f2e8f6;
 }
 
-.watch-header {
+.watchHeader {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 32px;
 }
 
-.watch-title {
+.watchTitle {
   font-size: 2.5rem;
   font-weight: 700;
   color: #8f6ca8;
@@ -89,7 +98,7 @@
     2px 2px 0 rgba(143, 108, 168, 0.2);
 }
 
-.watch-counter {
+.watchCounter {
   background: white;
   border: 3px solid #b08db9;
   border-radius: 999px;
@@ -104,13 +113,13 @@
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
 }
 
-.watch-counter span {
+.watchCounter span {
   color: #8f6ca8;
   font-weight: 700;
   font-size: 1.1rem;
 }
 
-.details-button {
+.detailsButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -132,7 +141,7 @@
   transition: all 0.3s ease;
 }
 
-.details-button:hover {
+.detailsButton:hover {
   transform: translateY(-2px);
 
   box-shadow: 0 8px 20px rgba(143, 108, 168, 0.3);

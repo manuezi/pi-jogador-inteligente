@@ -5,25 +5,18 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preversion": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{js,jsx}\"",
     "format:check": "prettier --check \"src/**/*.{js,jsx}\""
   },
   "dependencies": {
-    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "pathe": "^2.0.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-hook-form": "^7.77.0",
-    "react-router": "^7.17.0",
-    "react-router-dom": "^7.17.0",
-    "tailwind-merge": "^3.6.0"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router": "^7.17.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
-    "@types/node": "^25.9.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
@@ -34,18 +27,9 @@
     "prettier": "^3.8.1",
     "vite": "^8.0.16"
   },
-  "version": "1.0.0",
-  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
-  "main": "eslint.config.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/manuezi/pi-jogador-inteligente.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/manuezi/pi-jogador-inteligente/issues"
   },
   "homepage": "https://github.com/manuezi/pi-jogador-inteligente#readme"
 }

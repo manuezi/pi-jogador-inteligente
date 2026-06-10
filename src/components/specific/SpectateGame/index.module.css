@@ -1,4 +1,4 @@
-.spectator-container {
+.spectatorContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,7 +6,7 @@
   padding: 30px;
 }
 
-.spectator-card {
+.spectatorCard {
   width: 100%;
   max-width: 700px;
 
@@ -24,7 +24,7 @@
   animation: fadeUp 0.5s ease;
 }
 
-.spectator-icon {
+.spectatorIcon {
   width: 90px;
   height: 90px;
 
@@ -43,7 +43,7 @@
   border: 3px solid #b08db9;
 }
 
-.spectator-title {
+.spectatorTitle {
   text-align: center;
 
   color: #8f6ca8;
@@ -53,7 +53,7 @@
   margin-bottom: 12px;
 }
 
-.spectator-description {
+.spectatorDescription {
   text-align: center;
 
   color: #666;
@@ -77,14 +77,14 @@
   }
 }
 
-.spectator-topbar {
+.spectatorTopbar {
   display: flex;
   justify-content: flex-end;
 
   margin-bottom: 16px;
 }
 
-.leave-spectator-button {
+.leaveSpectatorButton {
   padding: 10px 18px;
 
   border: none;
@@ -105,7 +105,7 @@
   transition: all 0.3s ease;
 }
 
-.spectator-footer {
+.spectatorFooter {
   display: flex;
   justify-content: center;
 
@@ -113,28 +113,7 @@
   margin-bottom: 24px;
 }
 
-.leave-spectator-button {
-  padding: 12px 24px;
-
-  border: none;
-  border-radius: 999px;
-
-  background: linear-gradient(
-    135deg,
-    #e25555,
-    #c73e3e
-  );
-
-  color: white;
-
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition: all 0.3s ease;
-}
-
-.leave-spectator-button:hover {
+.leaveSpectatorButton:hover {
   transform: translateY(-2px);
 
   box-shadow: 0 8px 20px rgba(226, 85, 85, 0.3);

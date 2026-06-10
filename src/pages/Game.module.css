@@ -1,0 +1,38 @@
+.gamePage {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  padding: 20px;
+}
+
+.gameHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.gameTitle {
+  font-size: 2.8rem;
+  font-weight: 700;
+
+  color: #8f6ca8;
+
+  text-align: center;
+}
+
+.gameId {
+  padding: 10px 22px;
+
+  border-radius: 999px;
+
+  background: #f5ebfa;
+
+  border: 2px solid #b08db9;
+
+  color: #8f6ca8;
+
+  font-weight: 700;
+}

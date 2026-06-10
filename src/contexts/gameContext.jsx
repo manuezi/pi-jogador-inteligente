@@ -1,56 +1,72 @@
-import { createContext, useEffect, useState } from 'react';
-import { setAccessToken } from '@/components/specific/helpers/fetch'; 
+import { createContext, useEffect, useState } from "react";
 
-
-function readStoredValue(key) {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  const storedValue = localStorage.getItem(key);
-  return storedValue ? JSON.parse(storedValue) : null;
-}
-
+import { getLocalStorageItem, setLocalStorageItem } from "@/utils";
+import { api } from "@/services";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const gameContext = createContext({});
 
-export const GameContextProvider = ({ children }) => {
-  const [player, setPlayer] = useState(() => readStoredValue('player'));
+export function GameContextProvider({ children }) {
+  const [player, setPlayer] = useState(() => getLocalStorageItem("player"));
   const [spectator, setSpectatorData] = useState(() =>
-    readStoredValue('spectator')
+    getLocalStorageItem("spectator"),
   );
 
- function setSpectator(value) {
-    setSpectatorData(() => {
-      return Object.assign({}, spectator, {
-        [value?.game_id]: value,
-      });
-    });
+  function setSpectator(value) {
+    if (!value) return;
+    setSpectatorData((prev) => ({
+      ...prev,
+      [value?.game_id]: value,
+    }));
+  }
+
+  async function loginByToken(playerId, token) {
+    try {
+      setLocalStorageItem("token", token);
+      
+      const players = await api.listPlayers();
+      const foundPlayer = players.find((p) => String(p.id) === String(playerId));
+
+      if (!foundPlayer) {
+        throw new Error("Jogador não encontrado na lista.");
+      }
+
+      const playerWithToken = { ...foundPlayer, player_access_token: token };
+      setPlayer(playerWithToken);
+      return playerWithToken;
+    } catch (error) {
+      localStorage.removeItem("token");
+      throw error;
+    }
   }
 
   function logout() {
     setPlayer(null);
-    setSpectator(null);
+    setSpectatorData(null);
   }
 
+  function logoutSpectator(gameId) {
+    setSpectatorData((prev) => {
+      const updated = { ...prev };
+      delete updated[gameId];
+
+      return updated;
+    });
+  }
 
   useEffect(() => {
     if (player) {
-      localStorage.setItem('player', JSON.stringify(player));
-      setAccessToken(player?.player_access_token);
+      setLocalStorageItem("player", player);
+      setLocalStorageItem("token", player.player_access_token);
     } else {
-      localStorage.removeItem('player');
-      setAccessToken(null);
+      localStorage.removeItem("player");
+      localStorage.removeItem("token");
     }
   }, [player]);
 
   useEffect(() => {
-    if (spectator) {
-      localStorage.setItem('spectator', JSON.stringify(spectator));
-    } else {
-      localStorage.removeItem('spectator');
-    }
+    if (spectator) setLocalStorageItem("spectator", spectator);
+    else localStorage.removeItem("spectator");
   }, [spectator]);
 
   return (
@@ -61,11 +77,11 @@ export const GameContextProvider = ({ children }) => {
         spectator,
         setSpectator,
         logout,
+        logoutSpectator,
+        loginByToken,
       }}
     >
       {children}
     </gameContext.Provider>
   );
 }
-
-

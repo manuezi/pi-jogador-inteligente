@@ -1,4 +1,4 @@
-export * from "./Home";
 export * from "./Game";
-export * from "./Watch";
+export * from "./GameDetails";
+export * from "./WatchList";
 export * from "./Player";
