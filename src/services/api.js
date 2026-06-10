@@ -181,7 +181,8 @@ export const api = {
         Authorization: "Bearer " + getLocalStorageItem("token"),
       },
     });
-    if (!res.ok) throw new Error("Falha ao listar jogadores: " + await res.text());
+    if (!res.ok)
+      throw new Error("Falha ao listar jogadores: " + (await res.text()));
     return res.json();
   },
 
@@ -197,7 +198,8 @@ export const api = {
       },
       body: JSON.stringify(payload),
     });
-    if (!res.ok) throw new Error("Falha ao criar jogador: " + await res.text());
+    if (!res.ok)
+      throw new Error("Falha ao criar jogador: " + (await res.text()));
     return res.json();
   },
 
@@ -217,7 +219,7 @@ export const api = {
     });
     if (!res.ok)
       throw new Error(
-        "Falha ao atualizar endpoint de movimento: " + await res.text(),
+        "Falha ao atualizar endpoint de movimento: " + (await res.text()),
       );
     return res.json();
   },
@@ -235,7 +237,8 @@ export const api = {
       },
       body: JSON.stringify(payload),
     });
-    if (!res.ok) throw new Error("Falha ao criar partida: " + await res.text());
+    if (!res.ok)
+      throw new Error("Falha ao criar partida: " + (await res.text()));
     return res.json();
   },
 
@@ -255,7 +258,8 @@ export const api = {
         Authorization: "Bearer " + getLocalStorageItem("token"),
       },
     });
-    if (!res.ok) throw new Error("Falha ao listar partidas: " + await res.text());
+    if (!res.ok)
+      throw new Error("Falha ao listar partidas: " + (await res.text()));
     return res.json();
   },
 
@@ -269,7 +273,8 @@ export const api = {
         Authorization: "Bearer " + getLocalStorageItem("token"),
       },
     });
-    if (!res.ok) throw new Error("Falha ao buscar partida: " + await res.text());
+    if (!res.ok)
+      throw new Error("Falha ao buscar partida: " + (await res.text()));
     return res.json();
   },
 
@@ -283,7 +288,8 @@ export const api = {
         Authorization: "Bearer " + getLocalStorageItem("token"),
       },
     });
-    if (!res.ok) throw new Error("Falha ao listar turnos: " + await res.text());
+    if (!res.ok)
+      throw new Error("Falha ao listar turnos: " + (await res.text()));
     return res.json();
   },
 
@@ -297,7 +303,8 @@ export const api = {
         Authorization: "Bearer " + getLocalStorageItem("token"),
       },
     });
-    if (!res.ok) throw new Error("Falha ao listar jogadas: " + await res.text());
+    if (!res.ok)
+      throw new Error("Falha ao listar jogadas: " + (await res.text()));
     return res.json();
   },
 
@@ -315,7 +322,8 @@ export const api = {
       },
       body: JSON.stringify(payload),
     });
-    if (!res.ok) throw new Error("Falha ao entrar na partida: " + await res.text());
+    if (!res.ok)
+      throw new Error("Falha ao entrar na partida: " + (await res.text()));
     return res.json();
   },
 
@@ -333,7 +341,8 @@ export const api = {
       },
       body: JSON.stringify({ reason }),
     });
-    if (!res.ok) throw new Error("Falha ao iniciar partida: " + await res.text());
+    if (!res.ok)
+      throw new Error("Falha ao iniciar partida: " + (await res.text()));
     return res.json();
   },
 
@@ -352,7 +361,7 @@ export const api = {
       body: JSON.stringify(payload),
     });
     if (!res.ok)
-      throw new Error("Falha ao registrar espectador: " + await res.text());
+      throw new Error("Falha ao registrar espectador: " + (await res.text()));
     return res.json();
   },
 
@@ -361,7 +370,8 @@ export const api = {
    */
   getMockState: async () => {
     const res = await fetch(BASE_URL + "/games/mock-state", { method: "POST" });
-    if (!res.ok) throw new Error("Falha ao obter mock state: " + await res.text());
+    if (!res.ok)
+      throw new Error("Falha ao obter mock state: " + (await res.text()));
     return res.json();
   },
 

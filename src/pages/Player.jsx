@@ -1,4 +1,8 @@
-import { PlayerRegisterForm, PlayerUpdateForm, PlayerLoginForm } from "@/components/specific";
+import {
+  PlayerRegisterForm,
+  PlayerUpdateForm,
+  PlayerLoginForm,
+} from "@/components/specific";
 import { useGameContext } from "@/hooks/useGameContext";
 import styles from "./Player.module.css";
 

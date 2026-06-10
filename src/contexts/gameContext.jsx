@@ -23,9 +23,11 @@ export function GameContextProvider({ children }) {
   async function loginByToken(playerId, token) {
     try {
       setLocalStorageItem("token", token);
-      
+
       const players = await api.listPlayers();
-      const foundPlayer = players.find((p) => String(p.id) === String(playerId));
+      const foundPlayer = players.find(
+        (p) => String(p.id) === String(playerId),
+      );
 
       if (!foundPlayer) {
         throw new Error("Jogador não encontrado na lista.");
