@@ -3,77 +3,99 @@ import { Typography } from '@/pages/text/Typography';
 import { PlayerRegisterForm } from '@/components/specific/PlayerRegisterForm';
 import { PlayerUpdateForm } from '@/components/specific/PlayerUpdateForm';
 import { useGameContext } from '@/hooks/useGameContext';
+import "./Player.css";
 
 export function PlayerPage() {
 
   const { player, logout } = useGameContext();
 
-  return (
-    <div className={cn('flex flex-col gap-4 py-8', 'flex-1')}>
-      <Typography
-        variant={'h1'}
-        asTag={'h1'}
-        className={cn('text-4xl', 'font-bold')}
-      >
-        {player?.ai_player_name ? player.ai_player_name : 'Jogador'}
-      </Typography>
-
-      {player && (
-        <button
-          onClick={logout}
-          className={cn(
-            'px-4',
-            'py-2',
-            'bg-red-500',
-            'text-white',
-            'rounded-md',
-            'w-fit'
-          )}
+return (
+  <div className="player-page">
+    {!player && (
+      <div className="player-card">
+        <Typography
+          variant="h1"
+          asTag="h1"
+          className="player-title"
         >
-          Trocar Jogador
-        </button>
-      )}
+          Registro de Jogador
+        </Typography>
 
-      {!player && (
-        <>
-          <Typography variant={'h3'}>Registro de Jogador</Typography>
-          <PlayerRegisterForm />
-        </>
-      )}
+        <PlayerRegisterForm />
+      </div>
+    )}
 
-      {player && (
-        <>
-          <p>
-            <strong>Grupo</strong>: {player.group_name}
-          </p>
+    {player && (
+      <>
+        <div className="player-card">
+          <img
+            src={player.ai_player_avatar}
+            alt={player.ai_player_name}
+            className="player-avatar"
+          />
 
-          <p>
-            <strong>Nome do jogador</strong>: {player.ai_player_name}
-          </p>
-
-          <p>
-            <strong>URL do Avatar</strong>: {player.ai_player_avatar}
-          </p>
-
-          <p>
-            <strong>Descrição do Jogador</strong>:
-            {' '}{player.ai_player_description}
-          </p>
-
-          <p>
-            <strong>Endpoint de Movimento</strong>:
-            {' '}{player.ai_player_move_endpoint}
-          </p>
-
-          <hr />
-
-          <Typography variant={'h3'}>
-            Atualizar Endpoint de Movimento
+          <Typography
+            variant="h1"
+            asTag="h1"
+            className="player-title"
+          >
+            {player.ai_player_name}
           </Typography>
 
+          <span className="player-group">
+            {player.group_name}
+          </span>
+
+          <button
+            onClick={logout}
+            className="logout-button"
+          >
+            Trocar Jogador
+          </button>
+        </div>
+
+        <div className="info-card">
+          <Typography variant="h3">
+            Informações do Jogador
+          </Typography>
+          <br/>
+
+          <div className="info-item">
+            <strong>Grupo</strong>
+            <span>{player.group_name}</span>
+          </div>
+
+          <div className="info-item">
+            <strong>Nome</strong>
+            <span>{player.ai_player_name}</span>
+          </div>
+
+          <div className="info-item">
+            <strong>Avatar</strong>
+            <span>{player.ai_player_avatar}</span>
+          </div>
+
+          <div className="info-item">
+            <strong>Descrição</strong>
+            <span>{player.ai_player_description}</span>
+          </div>
+
+          <div className="info-item">
+            <strong>Endpoint</strong>
+            <span>{player.ai_player_move_endpoint}</span>
+          </div>
+        </div>
+
+        <div className="info-card">
+          <Typography variant="h3">
+            Atualizar Endpoint de Movimento
+          </Typography>
+          <br/>
+          
           <PlayerUpdateForm />
-        </>
-      )}
-    </div>
-  );
+        </div>
+      </>
+    )}
+  </div>
+);
 }

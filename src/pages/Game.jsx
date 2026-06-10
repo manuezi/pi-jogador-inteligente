@@ -1,59 +1,28 @@
-import { useGetMockState } from "@/hooks/api";
-import { Link, useParams } from "react-router-dom";
-import styles from "./Game.module.css";
+import { useParams } from "react-router-dom";
+import { Typography } from "@/pages/text/Typography";
+import { SpectateGame } from "./SpectateGame";
+import "./Game.css";
 
 export function Game() {
-  const { data, isLoading, error } = useGetMockState();
-  const { id } = useParams();
-
-
-    async function fetchGame() {
-
-    error(false);
-    isLoading(true);
-    try {
-      const response = await fetch(
-        "https://pi5-api-production.up.railway.app/api/v1/games/mock-state",
-        {
-          method: "POST",
-        }
-      );
-
-      const game = await response.json();
-      data(game);
-    } catch (err) {
-      error(true);
-    } finally {
-      isLoading(false);
-    }
-  }
-
-
-
-  if (isLoading || !data) {
-    return <div className={styles.container}>Carregando...</div>;
-  }
-
-  if (error) {
-    return <div className={styles.container}>Erro: {error.message}</div>;
-  }
-
-
+  const { gameId } = useParams();
 
   return (
-    <div className={styles.container} style={{ padding: 20 }}>
-      <h1>IA Page</h1>
-      <h1>Assistindo Jogo #{id}</h1>
-      <Link to="/watch">&lt; Voltar</Link>
-      <p>
-      {error && <span>Erro: {error.message}</span>}
-      {isLoading && <span>Carregando...</span>}
-      {data && (
-        <span>
-          Estado do jogo: <pre>{JSON.stringify(data, null, 2)}</pre>
-        </span>
-      )}
-      </p>
+    <div className="game-page">
+      <div className="game-header">
+        <Typography
+          variant="h1"
+          asTag="h1"
+          className="game-title"
+        >
+          🎮 Assistindo Partida
+        </Typography>
+
+        <div className="game-id">
+          #{gameId}
+        </div>
+      </div>
+
+      <SpectateGame gameId={gameId} />
     </div>
   );
 }

@@ -39,3 +39,53 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.updateInput {
+  width: 100%;
+  padding: 12px 16px;
+
+  border: 2px solid #d8c4e3;
+  border-radius: 12px;
+
+  background: white;
+
+  transition: all 0.3s ease;
+}
+
+.updateInput:focus {
+  outline: none;
+
+  border-color: #8f6ca8;
+
+  box-shadow: 0 0 12px rgba(143, 108, 168, 0.25);
+}
+
+.updateButton {
+  width: 100%;
+
+  padding: 12px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    #8f6ca8,
+    #6d6db5
+  );
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.updateButton:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 20px rgba(143, 108, 168, 0.3);
+}

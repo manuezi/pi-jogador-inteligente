@@ -60,34 +60,32 @@ export function PlayerUpdateForm() {
         render={({ field }) => (
           <div className={cn('flex flex-col gap-1')}>
             <label className="text-xs">Endpoint de movimento do jogador</label>
-            <input
-              className={cn('border rounded-sm px-4 py-2')}
-              type={'text'}
-              {...field}
-            />
+            <br/>            <br/>
+
+
+<input
+  className={styles.updateInput}
+  type="text"
+  {...field}
+/>
+
             {errors.ai_player_move_endpoint && (
               <span className={cn('text-red-500 text-xs')}>
                 {errors.ai_player_move_endpoint.message}
               </span>
             )}
+            
           </div>
+          
         )}
       />
+            <br/>
 
-      <button
-        type={'submit'}
-        disabled={isSubmitting}
-        className={cn(
-          'mt-4',
-          'px-4',
-          'py-2',
-          'bg-green-500',
-          'text-white',
-          'rounded-md',
-          'hover:bg-green-600',
-          isSubmitting && 'opacity-50 cursor-not-allowed'
-        )}
-      >
+<button
+  type="submit"
+  disabled={isSubmitting}
+  className={styles.updateButton}
+>
         {isSubmitting ? 'Atualizando...' : 'Atualizar Endpoint'}
       </button>
     </form>

@@ -1,0 +1,139 @@
+.watch-filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.watch-filters button {
+  min-width: 140px;
+
+  padding: 10px 20px;
+
+  border: 3px solid #b08db9;
+  border-radius: 999px;
+
+  background: white;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.watch-filters button:hover {
+  transform: translateY(-2px);
+}
+
+.watch-filters .active {
+  background: #e8d6ef;
+}
+
+.game-card {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 20px;
+
+  margin-bottom: 20px;
+
+  border: 3px solid #b08db9;
+
+  border-radius: 40px;
+
+  background: white;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.watch-button {
+  text-decoration: none;
+
+  padding: 10px 20px;
+
+  border: 3px solid #b08db9;
+
+  border-radius: 999px;
+
+  color: #333;
+
+  transition: 0.2s;
+}
+
+.watch-button:hover {
+  background: #f2e8f6;
+}
+
+.watch-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.watch-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #8f6ca8;
+  text-align: center;
+  margin-bottom: 12px;
+
+  text-shadow:
+    1px 1px 0 #ffffff,
+    2px 2px 0 rgba(143, 108, 168, 0.2);
+}
+
+.watch-counter {
+  background: white;
+  border: 3px solid #b08db9;
+  border-radius: 999px;
+
+  padding: 10px 24px;
+
+  font-size: 1rem;
+  font-weight: 500;
+
+  color: #555;
+
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.watch-counter span {
+  color: #8f6ca8;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.details-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 20px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    135deg,
+    #8f6ca8,
+    #6f4c8f
+  );
+
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+
+  transition: all 0.3s ease;
+}
+
+.details-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 20px rgba(143, 108, 168, 0.3);
+}

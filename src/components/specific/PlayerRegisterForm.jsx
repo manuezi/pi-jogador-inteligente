@@ -68,133 +68,149 @@ const { player, setPlayer } = context;
   }, [player]);
 
   return (
-    <form
-      onSubmit={form.handleSubmit(handleSubmit)}
-      className={cn('flex flex-col gap-2')}
+  <form
+    onSubmit={form.handleSubmit(handleSubmit)}
+    className={styles.formContainer}
+  >
+    <br/>
+    <Controller
+      name={'group_name'}
+      control={form.control}
+      rules={{ required: 'O nome do grupo é obrigatório' }}
+      render={({ field }) => (
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>
+            Nome do grupo
+          </label>
+
+          <input
+            className={styles.input}
+            type="text"
+            {...field}
+          />
+
+          {errors.group_name && (
+            <span className={styles.error}>
+              {errors.group_name.message}
+            </span>
+          )}
+        </div>
+      )}
+    />
+
+    <Controller
+      name={'ai_player_name'}
+      control={form.control}
+      rules={{ required: 'O nome do jogador de IA é obrigatório' }}
+      render={({ field }) => (
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>
+            Nome do jogador
+          </label>
+
+          <input
+            className={styles.input}
+            type="text"
+            {...field}
+          />
+
+          {errors.ai_player_name && (
+            <span className={styles.error}>
+              {errors.ai_player_name.message}
+            </span>
+          )}
+        </div>
+      )}
+    />
+
+    <Controller
+      name={'ai_player_avatar'}
+      control={form.control}
+      rules={{
+        required:
+          'A URL do avatar do jogador de IA é obrigatória',
+      }}
+      render={({ field }) => (
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>
+            URL do avatar
+          </label>
+
+          <input
+            className={styles.input}
+            type="text"
+            {...field}
+          />
+
+          {errors.ai_player_avatar && (
+            <span className={styles.error}>
+              {errors.ai_player_avatar.message}
+            </span>
+          )}
+        </div>
+      )}
+    />
+
+    <Controller
+      name={'ai_player_description'}
+      control={form.control}
+      render={({ field }) => (
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>
+            Descrição do jogador
+          </label>
+
+          <input
+            className={styles.input}
+            type="text"
+            {...field}
+          />
+
+          {errors.ai_player_description && (
+            <span className={styles.error}>
+              {errors.ai_player_description.message}
+            </span>
+          )}
+        </div>
+      )}
+    />
+
+    <Controller
+      name={'ai_player_move_endpoint'}
+      control={form.control}
+      rules={{
+        required:
+          'O endpoint de movimento do jogador de IA é obrigatório',
+      }}
+      render={({ field }) => (
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>
+            Endpoint de movimento do jogador
+          </label>
+
+          <input
+            className={styles.input}
+            type="text"
+            {...field}
+          />
+
+          {errors.ai_player_move_endpoint && (
+            <span className={styles.error}>
+              {errors.ai_player_move_endpoint.message}
+            </span>
+          )}
+        </div>
+      )}
+    />
+
+    <button
+      type="submit"
+      disabled={isSubmitting}
+      className={styles.button}
     >
-      <Controller
-        name={'group_name'}
-        control={form.control}
-        rules={{ required: 'O nome do grupo é obrigatório' }}
-        render={({ field }) => (
-          <div className={cn('flex flex-col gap-1')}>
-            <label className="text-xs">Nome do grupo</label>
-            <input
-              className={cn('border rounded-sm px-4 py-2')}
-              type={'text'}
-              {...field}
-            />
-            {errors.group_name && (
-              <span className={cn('text-red-500 text-xs')}>
-                {errors.group_name.message}
-              </span>
-            )}
-          </div>
-        )}
-      />
-
-      <Controller
-        name={'ai_player_name'}
-        control={form.control}
-        rules={{ required: 'O nome do jogador de IA é obrigatório' }}
-        render={({ field }) => (
-          <div className={cn('flex flex-col gap-1')}>
-            <label className="text-xs">Nome do jogador</label>
-            <input
-              className={cn('border rounded-sm px-4 py-2')}
-              type={'text'}
-              {...field}
-            />
-            {errors.ai_player_name && (
-              <span className={cn('text-red-500 text-xs')}>
-                {errors.ai_player_name.message}
-              </span>
-            )}
-          </div>
-        )}
-      />
-
-      <Controller
-        name={'ai_player_avatar'}
-        control={form.control}
-        rules={{ required: 'A URL do avatar do jogador de IA é obrigatória' }}
-        render={({ field }) => (
-          <div className={cn('flex flex-col gap-1')}>
-            <label className="text-xs">URL do avatar</label>
-            <input
-              className={cn('border rounded-sm px-4 py-2')}
-              type={'text'}
-              {...field}
-            />
-            {errors.ai_player_avatar && (
-              <span className={cn('text-red-500 text-xs')}>
-                {errors.ai_player_avatar.message}
-              </span>
-            )}
-          </div>
-        )}
-      />
-
-      <Controller
-        name={'ai_player_description'}
-        control={form.control}
-        render={({ field }) => (
-          <div className={cn('flex flex-col gap-1')}>
-            <label className="text-xs">Descrição do jogador</label>
-            <input
-              className={cn('border rounded-sm px-4 py-2')}
-              type={'text'}
-              {...field}
-            />
-            {errors.ai_player_description && (
-              <span className={cn('text-red-500 text-xs')}>
-                {errors.ai_player_description.message}
-              </span>
-            )}
-          </div>
-        )}
-      />
-
-      <Controller
-        name={'ai_player_move_endpoint'}
-        control={form.control}
-        rules={{
-          required: 'O endpoint de movimento do jogador de IA é obrigatório',
-        }}
-        render={({ field }) => (
-          <div className={cn('flex flex-col gap-1')}>
-            <label className="text-xs">Endpoint de movimento do jogador</label>
-            <input
-              className={cn('border rounded-sm px-4 py-2')}
-              type={'text'}
-              {...field}
-            />
-            {errors.ai_player_move_endpoint && (
-              <span className={cn('text-red-500 text-xs')}>
-                {errors.ai_player_move_endpoint.message}
-              </span>
-            )}
-          </div>
-        )}
-      />
-
-      <button
-        type={'submit'}
-        disabled={isSubmitting}
-        className={cn(
-          'mt-4',
-          'px-4',
-          'py-2',
-          'bg-green-500',
-          'text-white',
-          'rounded-md',
-          'hover:bg-green-600',
-          isSubmitting && 'opacity-50 cursor-not-allowed'
-        )}
-      >
-        {isSubmitting ? 'Registrando...' : 'Registrar Jogador'}
-      </button>
-    </form>
-  );
-  
-}
+      {isSubmitting
+        ? 'Registrando...'
+        : 'Registrar Jogador'}
+    </button>
+  </form>
+);}

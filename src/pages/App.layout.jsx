@@ -1,34 +1,29 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import "./App.layout.css";
-import { Outlet } from "react-router-dom";
+import { useGameContext } from '@/hooks/useGameContext';
 
 
 export function AppLayout() {
+
+  const { player, logout } = useGameContext();
+
   return (
-    <div className="layout">
-      <header className="header">
-        <h1>PI5</h1>
-      </header>
+    <div className="app">
+      <h1 className="title">
+        PROJETO INTEGRADOR 5: APLICAÇÕES DE INTELIGÊNCIA ARTIFICIAL
+      </h1>
 
       <nav className="menu">
-        <Link to="/" className="menu-button">
-          🏠 Home
-        </Link>
-
-        <Link to="/watch/:id" className="menu-button">
-          🎮 Game
+        <Link to="/watch" className="menu-button">
+          Jogos
         </Link>
 
         <Link to="/player" className="menu-button">
-          👤 Player
-        </Link>
-
-        <Link to="/watch" className="menu-button">
-          👁 Watch
+          Player
         </Link>
       </nav>
 
-      <main className="content">
+      <main className="main-panel">
         <Outlet />
       </main>
 
