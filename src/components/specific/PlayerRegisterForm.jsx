@@ -1,20 +1,16 @@
-import { useState } from "react";
-
-import { api } from "@/services";
-import { useGameContext } from "@/hooks";
+import { useGameContext, useCreatePlayer } from "@/hooks";
 import styles from "./PlayerRegisterForm.module.css";
 
 export function PlayerRegisterForm() {
   const { player, setPlayer } = useGameContext();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { createPlayer, isLoading } = useCreatePlayer();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setIsSubmitting(true);
 
     try {
       const formData = new FormData(e.currentTarget);
-      const response = await api.createPlayer({
+      const response = await createPlayer({
         group_name: formData.get("group_name"),
         ai_player_name: formData.get("ai_player_name"),
         ai_player_avatar: formData.get("ai_player_avatar"),
@@ -26,8 +22,6 @@ export function PlayerRegisterForm() {
       e.currentTarget.reset();
     } catch (err) {
       console.error(err?.message || "[ERR]: erro ao registrar jogador", err);
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
@@ -89,8 +83,8 @@ export function PlayerRegisterForm() {
         />
       </div>
 
-      <button type="submit" disabled={isSubmitting} className={styles.button}>
-        {isSubmitting ? "Registrando..." : "Registrar Jogador"}
+      <button type="submit" disabled={isLoading} className={styles.button}>
+        {isLoading ? "Registrando..." : "Registrar Jogador"}
       </button>
     </form>
   );
