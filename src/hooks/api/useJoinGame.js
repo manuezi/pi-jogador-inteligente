@@ -10,7 +10,7 @@ export function useJoinGame() {
     async (gameId, payload) => {
       return execute(() => api.joinGame(gameId, payload));
     },
-    [execute]
+    [execute],
   );
 
   return { joinGame, ...rest };

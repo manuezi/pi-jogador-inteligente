@@ -9,7 +9,7 @@ export function useCreatePlayer() {
     async (payload) => {
       return execute(() => api.createPlayer(payload));
     },
-    [execute]
+    [execute],
   );
 
   return { createPlayer, ...rest };

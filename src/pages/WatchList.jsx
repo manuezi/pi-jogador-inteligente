@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 
-import { useListGames, useJoinGame, useAddSpectator, useGameContext } from "@/hooks";
+import {
+  useListGames,
+  useJoinGame,
+  useAddSpectator,
+  useGameContext,
+} from "@/hooks";
 import styles from "./WatchList.module.css";
 
 export function WatchListPage() {
@@ -19,9 +24,11 @@ export function WatchListPage() {
       ? partidas
       : partidas.filter((partida) => partida.status === statusFiltro);
 
-  const handleJoin = async (gameId, turingPlayer, lovelacePlayer) => {
+  const handleJoin = async (gameId, turingPlayer) => {
     if (!player) {
-      alert("Você precisa estar logado como jogador para entrar em uma partida.");
+      alert(
+        "Você precisa estar logado como jogador para entrar em uma partida.",
+      );
       return;
     }
 
@@ -31,14 +38,14 @@ export function WatchListPage() {
     try {
       await joinGame(gameId, {
         player_id: player.id,
-        team_slot
+        team_slot,
       });
-      
+
       // Auto-registra como espectador antes de navegar
       try {
         const spec = await addSpectator(gameId, {
           spectator_name: player.ai_player_name,
-          spectator_avatar: player.ai_player_avatar
+          spectator_avatar: player.ai_player_avatar,
         });
         setSpectator(spec);
       } catch (specErr) {
@@ -69,9 +76,7 @@ export function WatchListPage() {
         </button>
 
         <button
-          className={
-            statusFiltro === "WAITING_PLAYERS" ? styles.active : ""
-          }
+          className={statusFiltro === "WAITING_PLAYERS" ? styles.active : ""}
           onClick={() => setStatusFiltro("WAITING_PLAYERS")}
         >
           Waiting for players
@@ -112,9 +117,15 @@ export function WatchListPage() {
 
               <p>Turno: {partida.current_turn_number}</p>
 
-              <p>Lovelace: {partida.lovelace_player?.ai_player_name || "Aguardando..."}</p>
+              <p>
+                Lovelace:{" "}
+                {partida.lovelace_player?.ai_player_name || "Aguardando..."}
+              </p>
 
-              <p>Turing: {partida.turing_player?.ai_player_name || "Aguardando..."}</p>
+              <p>
+                Turing:{" "}
+                {partida.turing_player?.ai_player_name || "Aguardando..."}
+              </p>
             </div>
 
             <div className={styles.actions}>
@@ -126,15 +137,18 @@ export function WatchListPage() {
                   Ver Resultado
                 </Link>
               ) : partida.status === "WAITING_PLAYERS" ? (
-                <button 
-                  onClick={() => handleJoin(partida.id, partida.turing_player, partida.lovelace_player)}
+                <button
+                  onClick={() => handleJoin(partida.id, partida.turing_player)}
                   disabled={isJoining}
                   className={styles.joinButton}
                 >
                   {isJoining ? "Entrando..." : "Entrar na partida"}
                 </button>
               ) : (
-                <Link to={`/watch/${partida.id}`} className={styles.watchButton}>
+                <Link
+                  to={`/watch/${partida.id}`}
+                  className={styles.watchButton}
+                >
                   Assistir partida
                 </Link>
               )}

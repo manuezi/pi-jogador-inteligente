@@ -1,7 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 
 import { AppLayout } from "./AppLayout";
-import { Game, GameDetails, WatchListPage, PlayerPage, CreateMatch } from "./pages";
+import {
+  Game,
+  GameDetails,
+  WatchListPage,
+  PlayerPage,
+  CreateMatch,
+} from "./pages";
 import { GameContextProvider } from "@/contexts";
 
 export function App() {

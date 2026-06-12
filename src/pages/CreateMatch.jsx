@@ -31,12 +31,12 @@ export function CreateMatch() {
       };
 
       const game = await createGame(payload);
-      
+
       // Auto-registra como espectador antes de navegar
       try {
         const spec = await addSpectator(game.id, {
           spectator_name: player.ai_player_name,
-          spectator_avatar: player.ai_player_avatar
+          spectator_avatar: player.ai_player_avatar,
         });
         setSpectator(spec);
       } catch (specErr) {
@@ -60,13 +60,13 @@ export function CreateMatch() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Configurar Nova Partida</h1>
-      
+
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.field}>
           <label className={styles.label}>Seu Time (Nossa IA)</label>
-          <select 
-            name="team_slot" 
-            value={formData.team_slot} 
+          <select
+            name="team_slot"
+            value={formData.team_slot}
             onChange={handleChange}
             className={styles.select}
           >
@@ -77,9 +77,9 @@ export function CreateMatch() {
 
         <div className={styles.field}>
           <label className={styles.label}>Adversário</label>
-          <select 
-            name="vs_random_bot" 
-            value={formData.vs_random_bot} 
+          <select
+            name="vs_random_bot"
+            value={formData.vs_random_bot}
             onChange={handleChange}
             className={styles.select}
           >
@@ -101,11 +101,15 @@ export function CreateMatch() {
           </label>
         </div>
 
-        {error && <p className={styles.error}>{error.message || "Erro ao criar partida"}</p>}
+        {error && (
+          <p className={styles.error}>
+            {error.message || "Erro ao criar partida"}
+          </p>
+        )}
 
-        <button 
-          type="submit" 
-          disabled={isLoading} 
+        <button
+          type="submit"
+          disabled={isLoading}
           className={styles.submitButton}
         >
           {isLoading ? "Criando..." : "Criar Partida"}

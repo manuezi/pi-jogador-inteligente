@@ -9,7 +9,7 @@ export function useAddSpectator() {
     async (gameId, payload) => {
       return execute(() => api.addSpectator(gameId, payload));
     },
-    [execute]
+    [execute],
   );
 
   return { addSpectator, ...rest };

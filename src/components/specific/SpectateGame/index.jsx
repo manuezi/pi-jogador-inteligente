@@ -17,7 +17,8 @@ export function SpectateGame({ gameId }) {
         try {
           const payload = {
             spectator_name: player?.ai_player_name || "Espectador Anônimo",
-            spectator_avatar: player?.ai_player_avatar || "https://picsum.photos/200",
+            spectator_avatar:
+              player?.ai_player_avatar || "https://picsum.photos/200",
           };
           const newSpectator = await addSpectator(gameId, payload);
           setSpectator(newSpectator);

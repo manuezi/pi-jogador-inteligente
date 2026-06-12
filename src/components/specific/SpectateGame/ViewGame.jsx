@@ -45,9 +45,7 @@ export function ViewGame({ gameId }) {
             </div>
 
             <div className={styles.boardWrapper}>
-              <Board
-                board={gameState.board}
-              />
+              <Board board={gameState.board} />
             </div>
           </>
         )}

@@ -12,7 +12,10 @@ export function PlayerUpdateForm() {
       const formData = new FormData(e.currentTarget);
       const endpoint = formData.get("ai_player_move_endpoint");
 
-      const updatedPlayer = await updatePlayerMoveEndpoint(player?.id, endpoint);
+      const updatedPlayer = await updatePlayerMoveEndpoint(
+        player?.id,
+        endpoint,
+      );
 
       setPlayer({ ...player, ...updatedPlayer });
     } catch (err) {

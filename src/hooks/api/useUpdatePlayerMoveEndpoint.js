@@ -9,7 +9,7 @@ export function useUpdatePlayerMoveEndpoint() {
     async (playerId, endpoint) => {
       return execute(() => api.updatePlayerMoveEndpoint(playerId, endpoint));
     },
-    [execute]
+    [execute],
   );
 
   return { updatePlayerMoveEndpoint, ...rest };

@@ -9,7 +9,7 @@ export function useCreateGame() {
     async (payload) => {
       return execute(() => api.createGame(payload));
     },
-    [execute]
+    [execute],
   );
 
   return { createGame, ...rest };

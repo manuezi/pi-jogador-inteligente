@@ -9,7 +9,7 @@ export function useStartGame() {
     async (gameId, reason) => {
       return execute(() => api.startGame(gameId, reason));
     },
-    [execute]
+    [execute],
   );
 
   return { startGame, ...rest };

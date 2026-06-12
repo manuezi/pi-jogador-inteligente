@@ -18,7 +18,9 @@ export function useFetch(fetchCallback, options = { manual: false }) {
   const execute = async (callbackOverride) => {
     setQuery((prev) => ({ ...prev, isLoading: true, error: null }));
     try {
-      const result = await (callbackOverride ? callbackOverride() : fetchCallback());
+      const result = await (callbackOverride
+        ? callbackOverride()
+        : fetchCallback());
       setQuery({ data: result, isLoading: false, error: null });
       return result;
     } catch (err) {
