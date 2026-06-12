@@ -1,29 +1,25 @@
-import { useState } from "react";
-
-import { api } from "@/services";
-import { useGameContext } from "@/hooks";
+import { useGameContext, useUpdatePlayerMoveEndpoint } from "@/hooks";
 import styles from "./PlayerUpdateForm.module.css";
 
 export function PlayerUpdateForm() {
   const { player, setPlayer } = useGameContext();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { updatePlayerMoveEndpoint, isLoading } = useUpdatePlayerMoveEndpoint();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setIsSubmitting(true);
 
     try {
       const formData = new FormData(e.currentTarget);
+      const endpoint = formData.get("ai_player_move_endpoint");
 
-      const updatedPlayer = await api.updatePlayerMoveEndpoint(player?.id, {
-        ai_player_move_endpoint: formData.get("ai_player_move_endpoint"),
-      });
+      const updatedPlayer = await updatePlayerMoveEndpoint(
+        player?.id,
+        endpoint,
+      );
 
       setPlayer({ ...player, ...updatedPlayer });
     } catch (err) {
       console.error(err?.message || "[ERR]: erro ao atualizar jogador", err);
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
@@ -42,10 +38,10 @@ export function PlayerUpdateForm() {
 
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isLoading}
         className={styles.updateButton}
       >
-        {isSubmitting ? "Atualizando..." : "Atualizar Endpoint"}
+        {isLoading ? "Atualizando..." : "Atualizar Endpoint"}
       </button>
     </form>
   );

@@ -9,8 +9,6 @@ export function ViewGame({ gameId }) {
     spectator?.[gameId]?.spectator_access_token || null,
   );
 
-  //console.log("GAME STATE:", gameState);
-
   return (
     <div className={styles.viewGameContainer}>
       <div className={styles.viewGameCard}>
@@ -47,11 +45,7 @@ export function ViewGame({ gameId }) {
             </div>
 
             <div className={styles.boardWrapper}>
-              <Board
-                board={gameState.board}
-                turingProfessor={gameState.turing_player?.ai_player_name}
-                lovelaceProfessor={gameState.lovelace_player?.ai_player_name}
-              />
+              <Board board={gameState.board} />
             </div>
           </>
         )}

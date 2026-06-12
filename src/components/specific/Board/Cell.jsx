@@ -7,9 +7,8 @@ import styles from "./Cell.module.css";
  * @param {Object} props
  * @param {number} props.level - Nível de construção (0 a 4).
  * @param {string|null} props.professor - Nome do professor na célula, se houver.
- * @param {"turing" | "lovelace" | null} props.team - Time do professor (turing ou lovelace).
  */
-export function Cell({ level, professor, team }) {
+export function Cell({ level, professor }) {
   const professorInitial = professor ? professor.charAt(0) : "";
 
   return (
@@ -33,8 +32,8 @@ export function Cell({ level, professor, team }) {
         {professor && (
           <div
             className={clsx(styles.professor, {
-              [styles.turing]: team === "turing",
-              [styles.lovelace]: team === "lovelace",
+              [styles.turing]: getTeam(professor) === "turing",
+              [styles.lovelace]: getTeam(professor) === "lovelace",
             })}
             title={professor}
           >
@@ -44,4 +43,17 @@ export function Cell({ level, professor, team }) {
       </div>
     </div>
   );
+}
+
+function getTeam(professorName) {
+  switch (professorName) {
+    case "CLARO":
+    case "REY":
+      return "turing";
+    case "KARIN":
+    case "BEATRIZ":
+      return "lovelace";
+    default:
+      return null;
+  }
 }

@@ -1,0 +1,133 @@
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background-color: #fff;
+  border: 3px solid #b08db9;
+  border-radius: 40px;
+  box-shadow: 0 10px 25px rgba(143, 108, 168, 0.1);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #8f6ca8;
+  text-shadow: 1px 1px 0 #ffffff;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6b6375;
+  text-align: center;
+}
+
+.select {
+  padding: 12px 20px;
+  border: 2px solid #e5e4e7;
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: #fcfaff;
+  color: #333; /* Fix white text issue */
+  cursor: pointer;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.select:focus {
+  border-color: #b08db9;
+}
+
+.fieldCheckbox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0.5rem 0;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #6b6375;
+}
+
+/* Custom Checkbox Styling */
+.checkbox {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #b08db9;
+  border-radius: 6px;
+  background-color: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.checkbox:checked {
+  background-color: #8f6ca8;
+  border-color: #8f6ca8;
+}
+
+.checkbox:checked::after {
+  content: "✓";
+  position: absolute;
+  color: white;
+  font-size: 16px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.submitButton {
+  padding: 16px;
+  margin-top: 1rem;
+  background: linear-gradient(135deg, #8f6ca8, #6f4c8f);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(143, 108, 168, 0.2);
+}
+
+.submitButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(143, 108, 168, 0.3);
+}
+
+.submitButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
