@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router";
 
 import { getLocalStorageItem, setLocalStorageItem } from "@/utils";
 import { api } from "@/services";
@@ -7,10 +8,22 @@ import { api } from "@/services";
 export const gameContext = createContext({});
 
 export function GameContextProvider({ children }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [player, setPlayer] = useState(() => getLocalStorageItem("player"));
   const [spectator, setSpectatorData] = useState(() =>
     getLocalStorageItem("spectator"),
   );
+
+  // Validação global de autenticação
+  useEffect(() => {
+    const isAuthPage = location.pathname === "/player";
+
+    if (!player && !isAuthPage) {
+      alert("Você deve realizar o login para acessar o sistema.");
+      navigate("/player");
+    }
+  }, [player, location.pathname, navigate]);
 
   function setSpectator(value) {
     if (!value) return;
@@ -52,8 +65,13 @@ export function GameContextProvider({ children }) {
       const updated = { ...prev };
       delete updated[gameId];
 
+      // Se não houver mais espectadores, removemos a chave do localStorage
+      if (Object.keys(updated).length === 0) return null;
+
       return updated;
     });
+
+    navigate("/");
   }
 
   useEffect(() => {
