@@ -253,34 +253,40 @@ Só é necessário passar o `gameId` e o `token` e o hook cuida de:
 
 ### 6.1. Mapeamento da API e Hooks Customizados
 
-Todas as requisições para o backend estão centralizadas na pasta `/services/api.js`. No entanto, a forma de consumí-las muda dependendo do tipo da requisição:
+Todas as requisições para o backend estão centralizadas na pasta `/services/api.js`. Para manter o padrão e a reusabilidade, **não consumimos o serviço `api` diretamente nos componentes**. Em vez disso, utilizamos hooks localizados em `hooks/api/`.
 
-#### Requisições do tipo GET (Leitura)
+Nosso motor `useFetch` foi evoluído para lidar com dois cenários:
 
-Para buscar dados, você **deve usar os Hooks Customizados** localizados em `hooks/api/` (ex: `useListPlayers`, `useGetGame`). Estes hooks utilizam o nosso motor `useFetch` e são protegidos por `useCallback` para evitar loops de requisições.
+#### Cenário A: Requisições de Leitura (GET)
+Para buscar dados que devem aparecer na tela assim que o componente carrega.
 
 **Como usar na prática:**
 ```javascript
-const { data, isLoading, error } = useGetGame(gameId);
+// O hook já vem configurado para disparar o GET automaticamente
+const { data, isLoading, error } = useListGames();
 
 if (isLoading) return <Loading />;
 if (error) return <Error message={error.message} />;
 
-return <div>{data.status}</div>;
+return <div>Total de jogos: {data.total}</div>;
 ```
 
-#### Requisições do tipo POST, PUT, DELETE (Ação)
-
-Para realizar ações (como criar um jogador ou iniciar uma partida), você **deve chamar o serviço `api` diretamente** dentro dos seus componentes ou formulários. Estas chamadas precisam ser envolvidas em um bloco `try/catch` para tratamento de erros.
+#### Cenário B: Requisições de Ação/Mutação (POST, PUT, DELETE)
+Para ações disparadas pelo usuário (clique de botão, envio de formulário). Usamos a propriedade `manual: true` e a função `execute`.
 
 **Como usar na prática:**
 ```javascript
-function fazAlgumaCoisa() {
+// O hook é inicializado em modo manual
+const { createPlayer, isLoading } = useCreatePlayer();
+
+async function handleAction(data) {
   try {
-    await api.createPlayer({ name: "João" }); // Chamada direta ao serviço api para ações
-    console.log("Criado com sucesso!");
+    // A função retornada pelo hook dispara a chamada e retorna a Promise
+    const novoPlayer = await createPlayer(data);
+    console.log("Sucesso:", novoPlayer);
   } catch (err) {
-    console.error("Erro na ação:", err.message); // Tratamento de erros dentro do bloco catch
+    // O erro também fica disponível no estado 'error' do hook se preferir
+    alert("Erro: " + err.message);
   }
 }
 ```
@@ -291,24 +297,37 @@ Seguimos uma filosofia de formulários de baixa complexidade.
 
 O nosso padrão para formulários é:
 - **Extração Sem Re-renders:** No evento `onSubmit`, use a API nativa `new FormData(e.currentTarget)` para extrair os valores. Isso evita criar estados para cada input e re-renderizar o formulário a cada tecla digitada.
-- **Validação Nativa:** Use os atributos do HTML5, como `required`, `minlength`, `type="url"`, etc. Deixe o navegador fazer o trabalho pesado de validar os campos.
-- **Estado de Envio:** Use um `useState` booleano simples (`isSubmitting`) para desabilitar o botão enquanto a requisição acontece. Sempre use o bloco `finally` no seu `try/catch` para garantir que o botão volte ao estado normal, independente de sucesso ou falha.
+- **Validação Nativa:** Use os atributos do HTML5, como `required`, `minlength`, `type="url"`, etc.
+- **Estado de Carregamento:** Utilize o `isLoading` retornado pelo hook da API para desabilitar botões e dar feedback visual.
 
 Exemplo de implementação padrão:
 ```javascript
-async function handleSubmit(e) {
-  e.preventDefault();
-  setIsSubmitting(true);
-  try {
-    const formData = new FormData(e.currentTarget);
-    const body = { nome: formData.get('nome') };
-    await api.algumaAcao(body); // Chamada direta ao serviço api para ações
-    e.currentTarget.reset(); // Limpa o form nativamente
-  } catch (err) {
-    console.error("Erro na ação:", err.message);
-  } finally {
-    setIsSubmitting(false);
+export function MeuForm() {
+  const { createPlayer, isLoading } = useCreatePlayer();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const formData = new FormData(e.currentTarget);
+      const payload = { 
+        ai_player_name: formData.get('ai_player_name') 
+      };
+      
+      await createPlayer(payload);
+      e.currentTarget.reset();
+    } catch (err) {
+      console.error("Erro:", err.message);
+    }
   }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input name="ai_player_name" required />
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? "Enviando..." : "Cadastrar"}
+      </button>
+    </form>
+  );
 }
 ```
 
